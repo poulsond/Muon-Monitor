@@ -1,0 +1,16 @@
+#/gasCherenkov/plane/planePosition 100 cm
+/run/initialize
+#/process/inactivate Scintillation
+/event/verbose 0
+/tracking/verbose 0
+/run/verbose 0
+/process/verbose 0
+#
+/gun/particle mu+
+/gun/energy 0.0 GeV
+/gun/direction 0. 0. 1.0
+/gun/position 0. 0. 0. m
+
+/run/beamOn 100
+
+#

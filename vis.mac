@@ -1,0 +1,28 @@
+/WaterCherenkov/fileName/fileName output_test.root
+/run/initialize
+/process/inactivate Scintillation
+/event/verbose 0
+/tracking/verbose 0
+/run/verbose 0
+/process/verbose 0
+
+/gun/particle mu+
+/gun/energy 0.0 GeV
+/gun/direction 1. 1. 1.
+/gun/position 0. 0. 0. cm
+
+/control/verbose 0
+/run/verbose 0
+/vis/scene/create
+/vis/open HepRepFile
+
+/vis/viewer/zoom 1.5
+/vis/viewer/flush
+/vis/scene/add/trajectories
+/vis/modeling/trajectories/create/drawByCharge
+/vis/modeling/trajectories/drawByCharge-0/default/setDrawStepPts true
+/vis/modeling/trajectories/drawByCharge-0/default/setStepPtsSize 2
+/vis/scene/endOfEventAction accumulate
+/vis/viewer/refresh
+/run/beamOn 2
+

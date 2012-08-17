@@ -1,0 +1,34 @@
+/gasCherenkov/detector/planePosition 4 m
+/gasCherenkov/detector/index 1.01112
+/GasCherenkov/fileName/fileName /axp/lnxdata304/wrk2/ltm/pitcherc/gas_cherenkov_cone/output/GCO_5.0GeV_1.01112.root
+/run/initialize
+/process/inactivate Scintillation
+/event/verbose 0
+/tracking/verbose 0
+/run/verbose 0
+/process/verbose 0
+/process/setVerbose 1
+
+#
+#/gps/particle mu+
+#/gps/direction 0. 0. 1.
+
+#/gps/ang/type beam1d
+#/gps/ang/rot1 -1 0 0
+#/gps/ang/sigma_r @ANGLE@ deg
+
+#/gps/pos/centre 0. 0. 3. cm
+#/gps/pos/type Plane
+#/gps/pos/shape Circle
+#/gps/pos/radius 5.0 cm
+ 
+#/gps/ene/type Gauss
+#/gps/ene/mono 5.0 GeV
+#/gps/ene/sigma 0.0 GeV
+#
+
+/gun/particle mu+
+/gun/energy 5.0 GeV
+/run/beamOn 5
+
+#
