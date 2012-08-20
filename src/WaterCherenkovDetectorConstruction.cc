@@ -172,14 +172,14 @@ G4VPhysicalVolume* WaterCherenkovDetectorConstruction::Construct()
   myMPT1->AddProperty("FASTCOMPONENT",PhotonEnergy,ScintilFast,nEntries);
   myMPT1->AddProperty("SLOWCOMPONENT",PhotonEnergy,ScintilSlow,nEntries);
   
-  myMPT1->AddConstProperty("SCINTILLATIONYIELD",50./MeV);
+  //myMPT1->AddConstProperty("SCINTILLATIONYIELD",50./MeV);
   myMPT1->AddConstProperty("RESOLUTIONSCALE",1.0);
   myMPT1->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
   myMPT1->AddConstProperty("SLOWTIMECONSTANT",10.*ns);
   myMPT1->AddConstProperty("YIELDRATIO",0.8);
   
   Water->SetMaterialPropertiesTable(myMPT1);
-  Water->GetIonisation()->SetBirksConstant(0.126*mm/MeV);
+  //  Water->GetIonisation()->SetBirksConstant(0.126*mm/MeV);
 
   // Glass
   G4double Glass_RIND[nEntries]={1.49,1.49,1.49};
@@ -282,7 +282,7 @@ G4VPhysicalVolume* WaterCherenkovDetectorConstruction::Construct()
    G4VPhysicalVolume* VCan_phys;
    G4VPhysicalVolume* SDisk_phys;
 
-   for(G4int i = 1; i < 4; i++)
+   for(G4int i = 1; i < 5; i++)
      {
        G4int angle = 90*i;
 
@@ -357,9 +357,9 @@ G4VPhysicalVolume* WaterCherenkovDetectorConstruction::Construct()
   G4double reflectivity2[nEntries] = {fReflectivity2,fReflectivity2,fReflectivity2};
   G4double efficiency2[nEntries] = {0.5,0.5,0.5};
 
-  myMPT3 -> AddProperty("BACKSCATTERCONSTANT",PhotonEnergy,backscatter2,nEntries);
+  myMPT4 -> AddProperty("BACKSCATTERCONSTANT",PhotonEnergy,backscatter2,nEntries);
   myMPT4 -> AddProperty("REFLECTIVITY",PhotonEnergy,reflectivity2,nEntries);
-  myMPT3 -> AddProperty("EFFICIENCY",PhotonEnergy,efficiency2,nEntries);
+  myMPT4 -> AddProperty("EFFICIENCY",PhotonEnergy,efficiency2,nEntries);
  
   OpGlSurface->SetMaterialPropertiesTable(myMPT4);
 
