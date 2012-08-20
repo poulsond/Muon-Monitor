@@ -282,7 +282,7 @@ G4VPhysicalVolume* WaterCherenkovDetectorConstruction::Construct()
    G4VPhysicalVolume* VCan_phys;
    G4VPhysicalVolume* SDisk_phys;
 
-   for(G4int i = 1; i < 5; i++)
+   for(G4int i = 1; i < 4; i++)
      {
        G4int angle = 90*i;
 

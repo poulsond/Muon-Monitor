@@ -305,7 +305,7 @@ void WaterCherenkovPhysicsList::ConstructOp()
 //   theAbsorptionProcess->DumpPhysicsTable();
 //   theRayleighScatteringProcess->DumpPhysicsTable();
 
-  SetVerbose(1);
+//  SetVerbose(verbose);
   
   theCerenkovProcess->SetMaxNumPhotonsPerStep(30);
   theCerenkovProcess->SetMaxBetaChangePerStep(10.0);
