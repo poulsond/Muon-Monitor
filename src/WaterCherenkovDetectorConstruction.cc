@@ -354,7 +354,7 @@ G4VPhysicalVolume* WaterCherenkovDetectorConstruction::Construct()
 
   G4MaterialPropertiesTable* myMPT4 = new G4MaterialPropertiesTable();
   G4double backscatter2[nEntries] = {0.1,0.1,0.1};
-  G4double reflectivity2[nEntries] = {0.9,0.9,0.9};
+  G4double reflectivity2[nEntries] = {fReflectivity2,fReflectivity2,fReflectivity2};
   G4double efficiency2[nEntries] = {0.5,0.5,0.5};
 
   myMPT3 -> AddProperty("BACKSCATTERCONSTANT",PhotonEnergy,backscatter2,nEntries);

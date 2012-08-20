@@ -45,7 +45,7 @@ WaterCherenkovDetectorMessenger::WaterCherenkovDetectorMessenger(
           WaterCherenkovDetectorConstruction*
           gcdConstruction):WaterCherenkovConstruction(gcdConstruction)
 {
-  gasDir = new G4UIdirectory("/gasCherenkov/detector/");
+  gasDir = new G4UIdirectory("/WaterCherenkov/detector/");
   gasDir->SetGuidance("Position of Plane");
    
   //planeCmd = new G4UIcmdWithADoubleAndUnit("/gasCherenkov/detector/planePosition", this);
@@ -56,6 +56,9 @@ WaterCherenkovDetectorMessenger::WaterCherenkovDetectorMessenger(
 
   reflectivityCmd = new G4UIcmdWithADouble("/WaterCherenkov/detector/reflectivity", this);
   reflectivityCmd->AvailableForStates(G4State_PreInit, G4State_Idle);
+
+  reflectivityCmd2 = new  G4UIcmdWithADouble("/WaterCherenkov/detector/reflectivity2", this);
+   reflectivityCmd2->AvailableForStates(G4State_PreInit, G4State_Idle);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -65,6 +68,7 @@ WaterCherenkovDetectorMessenger::~WaterCherenkovDetectorMessenger()
   //delete planeCmd;
   delete gasDir;
   delete reflectivityCmd;
+  delete reflectivityCmd2;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -92,6 +96,16 @@ void WaterCherenkovDetectorMessenger::SetNewValue(
       G4cout << " aluminum to " << reflectivity << G4endl;
     } else {
     WaterCherenkovConstruction->SetfReflectivity();
+    }
+
+   if( command == reflectivityCmd2 ) 
+    {
+      G4double reflectivity2 = reflectivityCmd2->GetNewDoubleValue(newValue);
+      WaterCherenkovConstruction->SetfReflectivity2( reflectivity2 );
+      G4cout << "WaterCherenkovDetectorMessenger command: Setting reflectivity of" << G4endl;
+      G4cout << " glass to " << reflectivity2 << G4endl;
+    } else {
+    WaterCherenkovConstruction->SetfReflectivity2();
     }
 }
 
