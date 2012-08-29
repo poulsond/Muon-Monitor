@@ -282,16 +282,16 @@ G4VPhysicalVolume* WaterCherenkovDetectorConstruction::Construct()
    G4VPhysicalVolume* VCan_phys;
    G4VPhysicalVolume* SDisk_phys;
 
-   for(G4int i = 1; i < 5; i++)
+   for(G4int i = 0; i < 6; i++)
      {
-       G4int angle = 90*i;
+       G4int angle = 60*i;
 
        GlassCan_phys = new G4PVPlacement(0,
 					 G4ThreeVector(cos(angle*deg)*6*cm,
 					 sin(angle*deg)*6*cm,
 					 17.7925*cm-0.249*cm),
 					 GlassCan_log,"GlassCan_phys",
-					 CarbonCan_log,false, 0);
+					 CarbonCan_log,false, i);
 
        VCan_phys = new G4PVPlacement(0,
 				     G4ThreeVector(cos(angle*deg)*6*cm,
