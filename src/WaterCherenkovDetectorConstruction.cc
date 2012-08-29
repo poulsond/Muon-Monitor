@@ -282,30 +282,30 @@ G4VPhysicalVolume* WaterCherenkovDetectorConstruction::Construct()
    G4VPhysicalVolume* VCan_phys;
    G4VPhysicalVolume* SDisk_phys;
 
-   for(G4int i = 0; i < 6; i++)
+   for(G4int i = 1; i < 7; i++)
      {
        G4int angle = 60*i;
 
-       GlassCan_phys = new G4PVPlacement(0,
-					 G4ThreeVector(cos(angle*deg)*6*cm,
-					 sin(angle*deg)*6*cm,
-					 17.7925*cm-0.249*cm),
-					 GlassCan_log,"GlassCan_phys",
-					 CarbonCan_log,false, i);
+        GlassCan_phys = new G4PVPlacement(0,
+					  G4ThreeVector(cos(angle*deg)*6*cm,
+					  sin(angle*deg)*6*cm,
+					  17.7925*cm-0.249*cm),
+					  GlassCan_log,"GlassCan_phys",
+					  CarbonCan_log,false, i);
 
-       VCan_phys = new G4PVPlacement(0,
-				     G4ThreeVector(cos(angle*deg)*6*cm,
-				     sin(angle*deg)*6*cm,
-				     17.7925*cm-0.3175*cm-0.249*cm),
-				     VCan_log, "VCan_Phys",
-				     CarbonCan_log, false, i);
+	VCan_phys = new G4PVPlacement(0,
+				       G4ThreeVector(cos(angle*deg)*6*cm,
+				       sin(angle*deg)*6*cm,
+				       17.7925*cm-0.3175*cm-0.249*cm),
+				       VCan_log, "VCan_Phys",
+				       CarbonCan_log, false, i);
        
-       SDisk_phys = new G4PVPlacement(0,
- 				      G4ThreeVector(cos(angle*deg)*6*cm,
- 				      sin(angle*deg)*6*cm,
- 				      10.16*cm-0.25*cm-0.18*cm),
- 				      SDisk_log, "SDisk_phys",
-      				      WaterCan_log, false, i);
+	// SDisk_phys = new G4PVPlacement(0,
+	//		      G4ThreeVector(cos(angle*deg)*6*cm,
+	//		      sin(angle*deg)*6*cm,
+	//		      10.16*cm-0.25*cm-0.18*cm),
+	//		      SDisk_log, "SDisk_phys",
+	//		      WaterCan_log, false, i);
        
        fDetectorPhysical = new G4PVPlacement(0,
 					     G4ThreeVector(cos(angle*deg)*6*cm,
