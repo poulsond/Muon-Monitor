@@ -334,12 +334,12 @@ G4VPhysicalVolume* WaterCherenkovDetectorConstruction::Construct()
 		 "AluminumSurface",WaterCan_phys,AlCan_phys,OpAlSurface);
 
   G4MaterialPropertiesTable* myMPT3 = new G4MaterialPropertiesTable();
-  G4double backscatter[nEntries] = {0.1,0.1,0.1};
-  G4double reflectivity[nEntries] = {fReflectivity,fReflectivity,fReflectivity}; //should not be zero!
-  G4double efficiency[nEntries] = {0.5,0.7,0.9};
-  G4double rindex2[nEntries] = {1.3,1.35,1.4};
-  G4double specularlobe[nEntries] = {0.3,0,3};
-  G4double specularspike[nEntries] = {0.2,0.2,0.2};
+  G4double backscatter[nEntries] = {0.1,0.1,0.1,0.1,0.1};
+  G4double reflectivity[nEntries] = {fReflectivity,fReflectivity,fReflectivity,fReflectivity,fReflectivity}; //should not be zero!
+  G4double efficiency[nEntries] = {0.5,0.7,0.9,0.9,0.9};
+  G4double rindex2[nEntries] = {1.3,1.35,1.4,1.45,1.5};
+  G4double specularlobe[nEntries] = {0.3,0.3,0.3,0.3,0.3};
+  G4double specularspike[nEntries] = {0.2,0.2,0.2,0.2,0.2};
 
   myMPT3 -> AddProperty("BACKSCATTERCONSTANT",PhotonEnergy,backscatter,nEntries);
   myMPT3 -> AddProperty("REFLECTIVITY",PhotonEnergy,reflectivity,nEntries);
@@ -360,9 +360,9 @@ G4VPhysicalVolume* WaterCherenkovDetectorConstruction::Construct()
 		 "GlSkinSurface",WaterCan_phys,SDisk_phys,OpGlSurface);
 
   G4MaterialPropertiesTable* myMPT4 = new G4MaterialPropertiesTable();
-  G4double backscatter2[nEntries] = {0.1,0.1,0.1};
-  G4double reflectivity2[nEntries] = {fReflectivity2,fReflectivity2,fReflectivity2};
-  G4double efficiency2[nEntries] = {0.5,0.5,0.5};
+  G4double backscatter2[nEntries] = {0.1,0.1,0.1,0.1,0.1};
+  G4double reflectivity2[nEntries] = {fReflectivity2,fReflectivity2,fReflectivity2,fReflectivity2,fReflectivity2};
+  G4double efficiency2[nEntries] = {0.5,0.5,0.5,0.5,0.5};
 
   myMPT4 -> AddProperty("BACKSCATTERCONSTANT",PhotonEnergy,backscatter2,nEntries);
   myMPT4 -> AddProperty("REFLECTIVITY",PhotonEnergy,reflectivity2,nEntries);
