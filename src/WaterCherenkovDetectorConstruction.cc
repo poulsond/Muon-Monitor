@@ -326,8 +326,8 @@ G4VPhysicalVolume* WaterCherenkovDetectorConstruction::Construct()
 // Aluminum Surface 
   G4OpticalSurface* OpAlSurface = new G4OpticalSurface("OpAlSurface");
   OpAlSurface->SetType(dielectric_metal);
-  //  OpAlSurface->SetFinish(polished);
-  OpAlSurface->SetModel(unified);
+  OpAlSurface->SetFinish(polished);
+  //  OpAlSurface->SetModel(unified);
 
   G4LogicalBorderSurface* AluminumSurface = new G4LogicalBorderSurface(
 		 "AluminumSurface",WaterCan_phys,AlCan_phys,OpAlSurface);
