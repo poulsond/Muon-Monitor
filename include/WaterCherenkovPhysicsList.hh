@@ -78,7 +78,7 @@ class WaterCherenkovPhysicsList : public G4VUserPhysicsList
     G4OpAbsorption*      theAbsorptionProcess;
     G4OpRayleigh*        theRayleighScatteringProcess;
     G4OpBoundaryProcess* theBoundaryProcess;
-    
+      
     WaterCherenkovPhysicsListMessenger* pMessenger;   
 };
 

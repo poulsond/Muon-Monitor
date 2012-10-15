@@ -61,10 +61,10 @@ Integral()<<std::endl;
 
   // Efficiency Histogram  
 
-  fTree->Draw("fNPhotons>>temp2(100,0,10000)","","goff");
+  fTree->Draw("fNPhotons>>temp2(100,0,10000)","fNPhotons!=0","goff");
   TH1D *NumPhotons = (TH1D *)gDirectory->Get("temp2");
 
-  fTree->Draw("fNHits>>temp(100,0,10000)","","goff");
+  fTree->Draw("fNHits>>temp(100,0,10000)","fNPhotons!=0","goff");
   TH1D *NumHits = (TH1D *)gDirectory->Get("temp");
   
   Int_t Total = 0;
@@ -76,7 +76,11 @@ Integral()<<std::endl;
     }
   }
 
-  Int_t DPhotons = NumHits->Divide(NumPhotons)->Integral();  
+  NumHits->Divide(NumPhotons);
+  new TCanvas();
+  NumHits->DrawCopy("hist");
+
+  Int_t DPhotons = NumHits->Integral();  
   std::cout<<"Total is: "<<Total<<std::endl;
   std::cout<<"DPhotons is: "<<DPhotons<<std::endl;
    

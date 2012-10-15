@@ -1,15 +1,17 @@
-/WaterCherenkov/detector/reflectivity 1.0
+/WaterCherenkov/detector/reflectivity 0.1
+/WaterCherenkov/detector/reflectivity2 0.04
 /run/initialize
 /process/inactivate Scintillation
 /event/verbose 0
 /tracking/verbose 0
 /run/verbose 0
 /process/verbose 0
-/process/setVerbose 1
+/process/setVerbose 0
 
-/gun/particle mu+
+/gun/particle mu-
 /gun/energy 0.0 GeV
+
 /gun/direction 0. 0. 1.0
 /gun/position 0. 0. 0. m
 
-/run/beamOn 1
+/run/beamOn 1000

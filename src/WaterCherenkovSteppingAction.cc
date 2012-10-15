@@ -67,7 +67,7 @@ void WaterCherenkovSteppingAction::UserSteppingAction(const G4Step *theStep)
 	    (theStep->GetPostStepPoint()->GetTotalEnergy()/eV);
           // because hbar*c = 197MeV*fm = 197 eV*nm
 	  //G4cout << "Particle Identity = " << theStep->GetTrack()->GetDefinition() << G4endl;
-	  G4cout << "HIT DETECTED! About to AddHit..." << G4endl;
+	  //  G4cout << "HIT DETECTED! About to AddHit..." << G4endl;
 	  theEvent->AddHit(planePosition, globalTime, initialPosition, wavelength);
 	  
 	  theStep->GetTrack()->SetTrackStatus(fKillTrackAndSecondaries);

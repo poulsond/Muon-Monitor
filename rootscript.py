@@ -36,7 +36,7 @@ for file in filelist:
      h1.GetXaxis().SetTitle("Number of Photons")
      h1.GetYaxis().SetTitle("Occurances")
      fTree.Draw("fNPhotons>>h1")
-     t1.Print('~/plot1.png')
+#     t1.Print('~/plot1.png')
 
      NumEvents = h1.Integral()  #calculate the number of events simulated
      
@@ -45,14 +45,14 @@ for file in filelist:
      h2.GetXaxis().SetTitle("Number of Photons")
      h2.GetYaxis().SetTitle("Occurances")
      fTree.Draw("fNHits>>h2")
-     t2.Print('~/plot2.png')
+#     t2.Print('~/plot2.png')
 
      t3.cd()
      h3=ROOT.TH1D("h3","Wavelength",7,300,650) #wavelength of detected photons
      h3.GetXaxis().SetTitle("Wavelength")
      h3.GetYaxis().SetTitle("Occurances")
      fTree.Draw("fWavelength_nm>>h3")
-     t3.Print('~/plot3.png')
+#     t3.Print('~/plot3.png')
 
      for y in range(1,8):
           fWavelength_count += h3.GetBinContent(y)
