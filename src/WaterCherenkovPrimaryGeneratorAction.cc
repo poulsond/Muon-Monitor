@@ -70,7 +70,7 @@ void WaterCherenkovPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 
   G4Gun->SetParticlePosition(G4ThreeVector(R*cos(Theta),
 					   R*sin(Theta), 
-					   Z);
+					   Z));
   G4Gun->GeneratePrimaryVertex(anEvent);
 }
 
