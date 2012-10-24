@@ -13,7 +13,7 @@
 
 void Histo()
 {
-  TFile *f = new TFile("Ref9HThousandEvents.root","READ");
+  TFile *f = new TFile("Ref1TThousandEvents.root","READ");
 
   TTree *fTree = (TTree *)f->Get("fTree");
 
@@ -37,7 +37,7 @@ void Histo()
   fTree->SetBranchAddress("fPrimePosZ_cm",&PrimePosZ_cm);
 
   // Number of Hits Histogram
-  TH1D *NHitsHisto = new TH1D("Number of Hits","Number of Hits",100,0,10000);
+  TH1D *NHitsHisto = new TH1D("Number of Hits","Number of Hits",100,0,1000);
 
   for(int i=0; i<fTree->GetEntries(); i++){
     fTree->GetEntry(i);
@@ -45,20 +45,30 @@ void Histo()
     NHitsHisto->Fill(NHits);
   }
   
-  new TCanvas();
+  /*  TCanvas *c1 = new TCanvas("c1","c1", 800, 1000);
+  // Add Histo Properties here
+  NHitsHisto->GetXaxis()->SetTitle("Number of Photon Detections");
+  NHitsHisto->GetYaxis()->SetTitle("Number of Occurances/100000 Events");
+  // NHitsHist->SetXTitle() ?
+  NHitsHisto->GetXaxis()->CenterTitle();
+  NHitsHisto->GetYaxis()->CenterTitle();
+  // NHitsHist->CenterYaxis() ?
+  NHitsHisto->SetTitle("");
+  gStyle->SetPadLeftMargin(0.12);
+  //
   NHitsHisto->Draw("hist");
-
+  */
 
   // Number of Hits with as functions of z and r
   TH1D *NHits_z = new TH1D
-    ("Z Hits", "Z Hits", 100,-15,15);
+    ("Z Hits", "Z Hits", 100,-11,11);
   TH1D *NPhotons_z = new TH1D
-    ("NPhotons_z", "NPhotons_z", 100,-15,15);
+    ("NPhotons_z", "NPhotons_z", 100,-11,11);
 
   TH1D *NHits_r = new TH1D
-    ("R Hits", "R Hits", 100,0,12);
+    ("R Hits", "R Hits", 100,0,11);
   TH1D *NPhotons_r = new TH1D
-    ("NPhotons_r", "NPhotons_r", 100,0,12);
+    ("NPhotons_r", "NPhotons_r", 100,0,11);
   
   for(int i=0; i<fTree->GetEntries(); i++){
     fTree->GetEntry(i);
@@ -74,21 +84,53 @@ void Histo()
     NPhotons_r->Fill(r, NPhotons);
   }
  
-  new TCanvas();
+  TCanvas *c2 = new TCanvas();
+  NHits_z->GetXaxis()->SetTitle("Z Position in Water (cm)");
+  NHits_z->GetYaxis()->SetTitle("Number of Photons");
+  NHits_z->GetXaxis()->CenterTitle();
+  NHits_z->GetYaxis()->CenterTitle();
+  NHits_z->SetTitle("");
+  gStyle->SetPadLeftMargin(0.12);
+  gStyle->SetTitleOffset(0.8,"");
+  //
   NPhotons_z->SetLineColor(kRed);
   NHits_z->DrawCopy("hist");
   NPhotons_z->DrawCopy("hist same");
-  
-  new TCanvas();
+
+  TCanvas *c3 = new TCanvas();
+  NHits_z->GetXaxis()->SetTitle("Z Position in Water (cm)");
+  NHits_z->GetYaxis()->SetTitle("Efficiency of Detection");
+  NHits_z->GetXaxis()->CenterTitle();
+  NHits_z->GetYaxis()->CenterTitle();
+  NHits_z->SetTitle("");
+  gStyle->SetPadLeftMargin(0.12);
+  gStyle->SetTitleOffset(0.8,"");
+  //
   NHits_z->Divide(NPhotons_z);
   NHits_z->DrawCopy("hist");
 
-  new TCanvas();
+  TCanvas *c4 = new TCanvas();
+  NHits_r->GetXaxis()->SetTitle("R Position in Water (cm)");
+  NHits_r->GetYaxis()->SetTitle("Number of Photons");
+  NHits_r->GetXaxis()->CenterTitle();
+  NHits_r->GetYaxis()->CenterTitle();
+  NHits_r->SetTitle("");
+  gStyle->SetPadLeftMargin(0.12);
+  gStyle->SetTitleOffset(0.8,"");
+  //
   NPhotons_r->SetLineColor(kRed);
   NHits_r->DrawCopy("hist");
   NPhotons_r->DrawCopy("hist same");
   
-  new TCanvas();
+  TCanvas *c5 = new TCanvas();
+  NHits_r->GetXaxis()->SetTitle("R Position in Water (cm)");
+  NHits_r->GetYaxis()->SetTitle("Efficiency of Detection");
+  NHits_r->GetXaxis()->CenterTitle();
+  NHits_r->GetYaxis()->CenterTitle();
+  NHits_r->SetTitle("");
+  gStyle->SetPadLeftMargin(0.12);
+  gStyle->SetTitleOffset(0.8,"");
+  //
   NHits_r->Divide(NPhotons_r);
   NHits_r->DrawCopy("hist");
 }

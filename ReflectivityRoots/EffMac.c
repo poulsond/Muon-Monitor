@@ -1,6 +1,6 @@
 {
 //
-  TFile *f = new TFile("WCRef9100000Events.root","READ");
+  TFile *f = new TFile("Ref9HThousandEvents.root","READ");
 
   TTree *fTree = (TTree *)f->Get("fTree");
 
