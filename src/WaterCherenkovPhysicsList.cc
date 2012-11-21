@@ -90,6 +90,17 @@ void WaterCherenkovPhysicsList::ConstructParticle()
   ConstructLeptons();
   ConstructMesons();
   ConstructBaryons();
+  ConstructIons();
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void WaterCherenkovPhysicsList::ConstructIons()
+{
+  G4Deuteron::DeuteronDefinition();
+  G4Triton::TritonDefinition();
+  G4He3::He3Definition();
+  G4Alpha::AlphaDefinition();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -120,6 +131,8 @@ void WaterCherenkovPhysicsList::ConstructLeptons()
   G4MuonMinus::MuonMinusDefinition();
   G4NeutrinoMu::NeutrinoMuDefinition();
   G4AntiNeutrinoMu::AntiNeutrinoMuDefinition();
+  G4TauPlus::TauPlusDefinition();
+  G4TauMinus::TauMinusDefinition();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -130,6 +143,10 @@ void WaterCherenkovPhysicsList::ConstructMesons()
   G4PionPlus::PionPlusDefinition();
   G4PionMinus::PionMinusDefinition();
   G4PionZero::PionZeroDefinition();
+  G4KaonZeroLong::KaonZeroLongDefinition();
+  G4KaonZeroShort::KaonZeroShortDefinition();
+  G4KaonPlus::KaonPlusDefinition();
+  G4KaonMinus::KaonMinusDefinition();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -141,6 +158,20 @@ void WaterCherenkovPhysicsList::ConstructBaryons()
   G4AntiProton::AntiProtonDefinition();
   G4Neutron::NeutronDefinition();
   G4AntiNeutron::AntiNeutronDefinition();
+  G4Lambda::LambdaDefinition();
+  G4AntiLambda::AntiLambdaDefinition();
+  G4OmegaMinus::OmegaMinusDefinition();
+  G4AntiOmegaMinus::AntiOmegaMinusDefinition();
+  G4SigmaPlus::SigmaPlusDefinition();
+  G4AntiSigmaPlus::AntiSigmaPlusDefinition();
+  G4SigmaMinus::SigmaMinusDefinition();
+  G4AntiSigmaMinus::AntiSigmaMinusDefinition();
+  G4SigmaZero::SigmaZeroDefinition();
+  G4AntiSigmaZero::AntiSigmaZeroDefinition();
+  G4XiMinus::XiMinusDefinition();
+  G4AntiXiMinus::AntiXiMinusDefinition();
+  G4XiZero::XiZeroDefinition();
+  G4AntiXiZero::AntiXiZeroDefinition();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -151,6 +182,7 @@ void WaterCherenkovPhysicsList::ConstructProcess()
   ConstructEM();
   ConstructOp();
   ConstructGeneral();
+  ConstructHP();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -214,6 +246,364 @@ void WaterCherenkovPhysicsList::ConstructGeneral()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+void WaterCherenkovPhysicsList::ConstructDP()
+{
+  theParticleIterator->reset();
+  while( (*theParticleIterator)() ){
+    G4ParticleDefinition* particle = theParticleIterator->value();
+    G4ProcessManager* pmanager = particle->GetProcessManager();
+    G4String particleName = particle->GetParticleName();
+
+    if ( particleName == "lambda" ) {
+      // lambda
+      // Construct Processes for lambda
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "antilambda" ) {
+      // antilambda
+      // Construct Processes for antilambda
+      pmanager->AddProcess(new G4Decay());
+    
+    } else if( particleName == "omega-" ) {
+      // omega-
+      // Construct Processes for omega-
+      pmanager->AddProcess(new G4Decay());
+    
+    } else if( particleName == "anti_omega-" ) {
+      // anti_omega-
+      // Construct Processes for anti_omega-
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "sigma+" ) {
+      // sigma+
+      // Construct Processes for sigma+
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "anti_sigma+" ) {
+      // anti_sigma+
+      // Construct Processes for anti_sigma+
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "sigma-" ) {
+      // sigma-
+      // Construct Processes for sigma-
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "anti_sigma-" ) {
+      // anti_sigma-
+      // Construct Processes for anti_sigma-
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "sigma0" ) {
+      // sigma0
+      // Construct Processes for sigma0
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "anti_sigma0" ) {
+      // anti_sigma0
+      // Construct Processes for anti_sigma0
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "xi-" ) {
+      // xi-
+      // Construct Processes for xi-
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "anti_xi-" ) {
+      // anti_xi-
+      // Construct Processes for anti_xi-
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "xi0" ) {
+      // xi0
+      // Construct Processes for xi0
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "anti_xi0" ) {
+      // anti_xi0
+      // Construct Processes for anti_xi0
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "kaon0L" ) {
+      // kaon0L
+      // Construct Processes for kaon0L
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "kaon0S" ) {
+      // kaon0S
+      // Construct Processes for kaon0S
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "pi+" ) {
+      // pi+
+      // Construct Processes for pi+
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "pi-" ) {
+      // pi-
+      // Construct Processes for pi-
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "pi0" ) {
+      // pi0
+      // Construct Processes for pi0
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "kaon+" ) {
+      // kaon+
+      // Construct Processes for kaon+
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "kaon-" ) {
+      // kaon-
+      // Construct Processes for kaon-
+      pmanager->AddProcess(new G4Decay());    
+
+    } else if( particleName == "mu+" ) {
+      // mu+
+      // Construct Processes for mu+
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "mu-" ) {
+      // mu-
+      // Construct Processes for mu-
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "tau+" ) {
+      // tau+
+      // Construct Processes for tau+
+      pmanager->AddProcess(new G4Decay());
+
+    } else if( particleName == "tau-" ) {
+      // tau-
+      // Construct Processes for tau-
+      pmanager->AddProcess(new G4Decay());
+    }
+  }
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#include "G4HadronElasticProcess.hh"
+#include "G4NeutronInelasticProcess.hh"
+#include "G4NeutronCaptureAtRest.hh"
+#include "G4HadronCaptureProcess.hh"
+#include "G4DeuteronInelasticProcess.hh"
+#include "G4TritonInelasticProcess.hh"
+#include "G4AlphaInelasticProcess.hh"
+#include "G4LambdaInelasticProcess.hh"
+#include "G4AntiLambdaInelasticProcess.hh"
+#include "G4OmegaMinusInelasticProcess.hh"
+#include "G4AntiOmegaMinusInelasticProcess.hh"
+#include "G4QCaptureAtRest.hh"
+#include "G4SigmaPlusInelasticProcess.hh"
+#include "G4AntiSigmaPlusInelasticProcess.hh"
+#include "G4SigmaMinusInelasticProcess.hh"
+#include "G4AntiSigmaMinusInelasticProcess.hh"
+#include "G4XiMinusInelasticProcess.hh"
+#include "G4AntiXiMinusInelasticProcess.hh"
+#include "G4XiZeroInelasticProcess.hh"
+#include "G4AntiXiZeroInelasticProcess.hh"
+#include "G4KaonZeroLInelasticProcess.hh"
+#include "G4KaonZeroSInelasticProcess.hh"
+#include "G4PionPlusInelasticProcess.hh"
+#include "G4PionMinusInelasticProcess.hh"
+#include "G4PionMinusAbsorptionAtRest.hh"
+#include "G4KaonPlusInelasticProcess.hh"
+#include "G4KaonMinusInelasticProcess.hh"
+#include "G4KaonMinusAbsorption.hh"
+#include "G4KaonMinusAbsorptionAtRest.hh"
+#include "G4MuonNucleusProcess.hh"
+#include "G4MuNuclearInteraction.hh"
+#include "G4MuonMinusCaptureAtRest.hh"
+#include "G4ElectronNuclearProcess.hh"
+#include "G4PositronNuclearProcess.hh"
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void WaterCherenkovPhysicsList::ConstructHP()
+{
+  theParticleIterator->reset();
+  while( (*theParticleIterator)() ){
+    G4ParticleDefinition* particle = theParticleIterator->value();
+    G4ProcessManager* pmanager = particle->GetProcessManager();
+    G4String particleName = particle->GetParticleName();
+
+    if ( particleName == "neutron" ) {
+      // neutron
+      // Costruct Processes for neutron
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4NeutronInelasticProcess());
+      pmanager->AddRestProcess(new G4NeutronCaptureAtRest());
+      pmanager->AddDiscreteProcess(new G4HadronCaptureProcess());
+
+    } else if( particleName == "deuteron" ) {
+      // deuteron
+      // Construct Processes for deuteron
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4DeuteronInelasticProcess());
+
+    } else if( particleName == "triton" ) {
+      // triton
+      // Construct Processes for triton
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4TritonInelasticProcess());
+
+    } else if( particleName == "He3" ) {
+      // He3
+      // Construct Processes for He3
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+
+    } else if( particleName == "alpha" ) {
+      // alpha
+      // Construct Processes for alpha
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4AlphaInelasticProcess());
+    
+    } else if( particleName == "lambda" ) {
+      // lambda
+      // Construct Processes for lambda
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4LambdaInelasticProcess());
+
+    } else if( particleName == "antilambda" ) {
+      // antilambda
+      // Construct Processes for antilambda
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4AntiLambdaInelasticProcess());
+    
+    } else if( particleName == "omega-" ) {
+      // omega-
+      // Construct Processes for omega-
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4OmegaMinusInelasticProcess());
+      pmanager->AddRestProcess(new G4QCaptureAtRest());
+
+    } else if( particleName == "anti_omega-" ) {
+      // anti_omega-
+      // Construct Processes for anti_omega-
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4AntiOmegaMinusInelasticProcess());
+
+    } else if( particleName == "sigma+" ) {
+      // sigma+
+      // Construct Processes for sigma+
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4SigmaPlusInelasticProcess());
+
+    } else if( particleName == "anti_sigma+" ) {
+      // anti_sigma+
+      // Construct Processes for anti_sigma+
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4AntiSigmaPlusInelasticProcess());
+      pmanager->AddRestProcess(new G4QCaptureAtRest());
+
+    } else if( particleName == "sigma-" ) {
+      // sigma-
+      // Construct Processes for sigma-
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4SigmaMinusInelasticProcess());
+      pmanager->AddRestProcess(new G4QCaptureAtRest());
+
+    } else if( particleName == "anti_sigma-" ) {
+      // anti_sigma-
+      // Construct Processes for anti_sigma-
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4AntiSigmaMinusInelasticProcess());
+
+    } else if( particleName == "xi-" ) {
+      // xi-
+      // Construct Processes for xi-
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4XiMinusInelasticProcess());
+      pmanager->AddRestProcess(new G4QCaptureAtRest());
+
+    } else if( particleName == "anti_xi-" ) {
+      // anti_xi-
+      // Construct Processes for anti_xi-
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4AntiXiMinusInelasticProcess());
+
+    } else if( particleName == "xi0" ) {
+      // xi0
+      // Construct Processes for xi0
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4XiZeroInelasticProcess());
+
+    } else if( particleName == "anti_xi0" ) {
+      // anti_xi0
+      // Construct Processes for anti_xi0
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4AntiXiZeroInelasticProcess());
+
+    } else if( particleName == "kaon0L" ) {
+      // kaon0L
+      // Construct Processes for kaon0L
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4KaonZeroLInelasticProcess());
+
+    } else if( particleName == "pi+" ) {
+      // pi+
+      // Construct Processes for pi+
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4PionPlusInelasticProcess());
+
+    } else if( particleName == "pi-" ) {
+      // pi-
+      // Construct Processes for pi-
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4PionMinusInelasticProcess());
+      pmanager->AddRestProcess(new G4PionMinusAbsorptionAtRest());
+      pmanager->AddRestProcess(new G4QCaptureAtRest());
+
+    } else if( particleName == "kaon+" ) {
+      // kaon+
+      // Construct Processes for kaon+
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4KaonPlusInelasticProcess());
+
+    } else if( particleName == "kaon-" ) {
+      // kaon-
+      // Construct Processes for kaon-
+      pmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      pmanager->AddDiscreteProcess(new G4KaonMinusInelasticProcess());
+      pmanager->AddRestProcess(new G4KaonMinusAbsorption());
+      pmanager->AddRestProcess(new G4KaonMinusAbsorptionAtRest());
+      pmanager->AddRestProcess(new G4QCaptureAtRest());
+
+    } else if( particleName == "mu+" ) {
+      // mu+
+      // Construct Processes for mu+
+      pmanager->AddDiscreteProcess(new G4MuonNucleusProcess());
+      pmanager->AddDiscreteProcess(new G4MuNuclearInteraction());
+
+    } else if( particleName == "mu-" ) {
+      // mu-
+      // Construct Processes for mu-
+      pmanager->AddDiscreteProcess(new G4MuonNucleusProcess());
+      pmanager->AddDiscreteProcess(new G4MuNuclearInteraction());
+      pmanager->AddRestProcess(new G4MuonMinusCaptureAtRest());
+
+    } else if( particleName == "e+" ) {
+      // e+
+      // Construct Processes for e+
+      pmanager->AddDiscreteProcess(new G4PositronNuclearProcess());
+
+    } else if( particleName == "e-" ) {
+      // e-
+      // Construct Processes for e-
+      pmanager->AddDiscreteProcess(new G4ElectronNuclearProcess());
+
+    } else if( particleName == "tau-" ) {
+      // tau-
+      // Construct Processes for tau-
+      pmanager->AddRestProcess(new G4QCaptureAtRest());
+    }
+  }
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 #include "G4ComptonScattering.hh"
 #include "G4GammaConversion.hh"
 #include "G4PhotoElectricEffect.hh"
@@ -229,6 +619,8 @@ void WaterCherenkovPhysicsList::ConstructGeneral()
 #include "G4MuonMinusCaptureAtRest.hh"
 
 #include "G4hIonisation.hh"
+#include "G4ionIonisation.hh"
+#include "G4Cerenkov.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -277,7 +669,137 @@ void WaterCherenkovPhysicsList::ConstructEM()
      pmanager->AddProcess(new G4MuIonisation(),         -1, 2, 2);
      pmanager->AddProcess(new G4MuBremsstrahlung(),     -1, 3, 3);
      pmanager->AddProcess(new G4MuPairProduction(),     -1, 4, 4);
-     //pmanager->AddProcess(new G4MuonMinusCaptureAtRest(),0,-1,-1);
+     pmanager->AddProcess(new G4MuonMinusCaptureAtRest(),0,-1,-1);
+
+    } else if( particleName == "deuteron" ) {
+      // deuteron
+      // Construct processes for deuteron
+      pmanager->AddProcess(new G4MultipleScattering(),  -1, 1, 1);
+      pmanager->AddProcess(new G4ionIonisation(),       -1, 2, 2);
+      pmanager->AddProcess(new G4hIonisation(),         -1, 2, 2);
+      pmanager->AddProcess(new G4Cerenkov());
+
+    } else if( particleName == "triton" ) {
+      // triton
+      // Construct processes for triton
+      pmanager->AddProcess(new G4MultipleScattering(),  -1, 1, 1);
+      pmanager->AddProcess(new G4ionIonisation(),       -1, 2, 2);
+      pmanager->AddProcess(new G4hIonisation(),         -1, 2, 2);
+      pmanager->AddProcess(new G4Cerenkov());
+
+    } else if( particleName == "He3" ) {
+      // He3
+      // Construct Processes for He3
+      pmanager->AddProcess(new G4MultipleScattering(),  -1, 1, 1);
+      pmanager->AddProcess(new G4ionIonisation(),       -1, 2, 2);
+      pmanager->AddProcess(new G4hIonisation(),         -1, 2, 2);
+      pmanager->AddProcess(new G4Cerenkov());
+
+    } else if( particleName == "alpha" ) {
+      // alpha
+      // Construct Processes for alpha
+      pmanager->AddProcess(new G4MultipleScattering(),  -1, 1, 1);
+      pmanager->AddProcess(new G4ionIonisation(),       -1, 2, 2);
+      pmanager->AddProcess(new G4hIonisation(),         -1, 2, 2);
+      pmanager->AddProcess(new G4Cerenkov());
+
+    } else if( particleName == "omega-" ) {
+      // omega-
+      // Construct Processes for omega-
+      pmanager->AddProcess(new G4MultipleScattering(),  -1, 1, 1);
+      pmanager->AddProcess(new G4hIonisation(),         -1, 2, 2);
+      pmanager->AddProcess(new G4Cerenkov());
+
+    } else if( particleName == "anti_omega-" ) {
+      // anti_omega-
+      // Construct Processes for anti_omega-
+      pmanager->AddProcess(new G4MultipleScattering(),  -1, 1, 1);
+      pmanager->AddProcess(new G4hIonisation(),         -1, 2, 2);
+      pmanager->AddProcess(new G4Cerenkov());
+
+    } else if( particleName == "sigma+" ) {
+      // sigma+
+      // Construct Processes for sigma+
+      pmanager->AddProcess(new G4MultipleScattering(),  -1, 1, 1);
+      pmanager->AddProcess(new G4hIonisation(),         -1, 2, 2);
+      pmanager->AddProcess(new G4Cerenkov());
+
+    } else if( particleName == "anti_sigma+" ) {
+      // anti_sigma+
+      // Construct Processes for anti_sigma+
+      pmanager->AddProcess(new G4MultipleScattering(),  -1, 1, 1);
+      pmanager->AddProcess(new G4hIonisation(),         -1, 2, 2);
+      pmanager->AddProcess(new G4Cerenkov());
+
+    } else if( particleName == "sigma-" ) {
+      // sigma-
+      // Construct Processes for sigma-
+      pmanager->AddProcess(new G4MultipleScattering(),  -1, 1, 1);
+      pmanager->AddProcess(new G4hIonisation(),         -1, 2, 2);
+      pmanager->AddProcess(new G4Cerenkov());
+
+    } else if( particleName == "anti_sigma-" ) {
+      // anti_sigma-
+      // Construct Processes for anti_sigma-
+      pmanager->AddProcess(new G4MultipleScattering(),  -1, 1, 1);
+      pmanager->AddProcess(new G4hIonisation(),         -1, 2, 2);
+      pmanager->AddProcess(new G4Cerenkov());
+
+    } else if( particleName == "xi-" ) {
+      // xi-
+      // Construct Processes for xi-
+      pmanager->AddProcess(new G4MultipleScattering(),  -1, 1, 1);
+      pmanager->AddProcess(new G4hIonisation(),         -1, 2, 2);
+      pmanager->AddProcess(new G4Cerenkov());
+
+    } else if( particleName == "anti_xi-" ) {
+      // anti_xi-
+      // Construct Processes for anti_xi-
+      pmanager->AddProcess(new G4MultipleScattering(),  -1, 1, 1);
+      pmanager->AddProcess(new G4hIonisation(),         -1, 2, 2);
+      pmanager->AddProcess(new G4Cerenkov());
+
+    } else if( particleName == "pi+" ) {
+      // pi+
+      // Construct Processes for pi+
+      pmanager->AddProcess(new G4MultipleScattering(),  -1, 1, 1);
+      pmanager->AddProcess(new G4hIonisation(),         -1, 2, 2);
+      pmanager->AddProcess(new G4Cerenkov());
+
+    } else if( particleName == "pi-" ) {
+      // pi-
+      // Construct Processes for pi-
+      pmanager->AddProcess(new G4MultipleScattering(),  -1, 1, 1);
+      pmanager->AddProcess(new G4hIonisation(),         -1, 2, 2);
+      pmanager->AddProcess(new G4Cerenkov());
+
+    } else if( particleName == "kaon+" ) {
+      // kaon+
+      // Construct Processes for kaon+
+      pmanager->AddProcess(new G4MultipleScattering(),  -1, 1, 1);
+      pmanager->AddProcess(new G4hIonisation(),         -1, 2, 2);
+      pmanager->AddProcess(new G4Cerenkov());
+
+    } else if( particleName == "kaon-" ) {
+      // kaon-
+      // Construct Processes for kaon-
+      pmanager->AddProcess(new G4MultipleScattering(),  -1, 1, 1);
+      pmanager->AddProcess(new G4hIonisation(),         -1, 2, 2);
+      pmanager->AddProcess(new G4Cerenkov());
+
+    } else if( particleName == "tau+" ) {
+      // tau+
+      // Construct Processes for tau+
+      pmanager->AddProcess(new G4MultipleScattering(),  -1, 1, 1);
+      pmanager->AddProcess(new G4hIonisation(),         -1, 2, 2);
+      pmanager->AddProcess(new G4Cerenkov());
+
+    } else if( particleName == "tau-" ) {
+      // tau-
+      // Construct Processes for tau-
+      pmanager->AddProcess(new G4MultipleScattering(),  -1, 1, 1);
+      pmanager->AddProcess(new G4hIonisation(),         -1, 2, 2);
+      pmanager->AddProcess(new G4Cerenkov());
 
     } else {
       if ((particle->GetPDGCharge() != 0.0) &&
@@ -285,7 +807,7 @@ void WaterCherenkovPhysicsList::ConstructEM()
      // all others charged particles except geantino
        pmanager->AddProcess(new G4MultipleScattering(),-1,1,1);
        pmanager->AddProcess(new G4hIonisation(),       -1,2,2);
-     }
+      }
     }
   }
 }
