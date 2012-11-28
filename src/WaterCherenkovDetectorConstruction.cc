@@ -413,7 +413,7 @@ n                                        absorptionIndexAl,numEntriesAl);
 
   for(int i=0; i<nEntries; i++) {
     backscatter2[i] = 0.1;
-    efficiency2[i}; = 0.5;
+    efficiency2[i] = 0.5;
   }
 
   myMPT4 -> AddProperty("BACKSCATTERCONSTANT",PhotonEnergy,backscatter2,nEntries);
