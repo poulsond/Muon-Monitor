@@ -45,7 +45,6 @@
 WaterCherenkovRunAction::WaterCherenkovRunAction()
 {
   //create a messenger for this class
-  fFileName = "WaterCherenkov.root";
   runMessenger = new WaterCherenkovRunMessenger(this);
   
   G4cout << "The Name of the file is actually " << fFileName << G4endl;
@@ -56,7 +55,6 @@ WaterCherenkovRunAction::WaterCherenkovRunAction()
 
   
   // create a messenger for the reflectivity here?
-  
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
