@@ -56,6 +56,9 @@ WaterCherenkovDetectorMessenger::WaterCherenkovDetectorMessenger(
 
   reflectivityCmd = new G4UIcmdWithADouble("/WaterCherenkov/detector/reflectivity", this);
   reflectivityCmd->AvailableForStates(G4State_PreInit, G4State_Idle);
+
+  absCmd = new G4UIcmdWithADouble("/WaterCherenkov/detector/AbsConstant", this);
+  absCmd->AvailableForStates(G4State_PreInit, G4State_Idle);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -65,6 +68,7 @@ WaterCherenkovDetectorMessenger::~WaterCherenkovDetectorMessenger()
   //delete planeCmd;
   delete gasDir;
   delete reflectivityCmd;
+  delete absCmd;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -92,6 +96,16 @@ void WaterCherenkovDetectorMessenger::SetNewValue(
       G4cout << " aluminum to " << reflectivity << G4endl;
     } else {
     WaterCherenkovConstruction->SetfReflectivity();
+    }
+
+  if( command == absCmd ) 
+    {
+      G4double AbsConstant = absCmd->GetNewDoubleValue(newValue);
+      WaterCherenkovConstruction->SetfAbsConstant( AbsConstant );
+      G4cout << "WaterCherenkovDetectorMessenger command: Absorbtion changed by" << G4endl;
+      G4cout << " a factor of " << AbsConstant << G4endl;
+    } else {
+    WaterCherenkovConstruction->SetfAbsConstant();
     }
 
 }

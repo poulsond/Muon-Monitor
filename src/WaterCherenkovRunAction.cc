@@ -36,6 +36,7 @@
 #include "WaterCherenkovRunAction.hh"
 #include "WaterCherenkovRunMessenger.hh"
 #include "WaterCherenkovEventAction.hh"
+#include "WaterCherenkovDetectorConstruction.hh"
 
 #include "G4RunManager.hh"
 #include "G4Run.hh"
@@ -52,7 +53,7 @@ WaterCherenkovRunAction::WaterCherenkovRunAction()
   timer = new G4Timer;
   fFile = new TFile();
   fTree = new TTree();
-
+  mTree = new TTree();
   
   // create a messenger for the reflectivity here?
 }
@@ -131,4 +132,17 @@ void WaterCherenkovRunAction::InitializeTree()
   tempTree->Branch("lDefinition",   theEvent->GetlDefinition(),      "lDefinition[indexnum]/I");
 
   fTree = tempTree;
+
+  TTree *memoTree = new TTree("memoTree", "");
+  G4double Reflectivity = 0;
+  memoTree->Branch("Reflectivity", &Reflectivity,  "Reflectivity/D");
+  
+  mTree = memoTree;
+
+  WaterCherenkovDetectorConstruction *Detector =
+  (WaterCherenkovDetectorConstruction*)G4RunManager::GetRunManager()->GetUserDetectorConstruction();
+ 
+  Reflectivity = Detector->GetReflectivity();
+  mTree->Fill();
+
 }

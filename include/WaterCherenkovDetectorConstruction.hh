@@ -44,17 +44,21 @@ class WaterCherenkovDetectorMessenger;
 
 class WaterCherenkovDetectorConstruction : public G4VUserDetectorConstruction
 {
-  public:
-    WaterCherenkovDetectorConstruction();
-   ~WaterCherenkovDetectorConstruction();
-
-    G4VPhysicalVolume* Construct();
-
-    G4LogicalVolume* GetDetectorLogicalVolume() { return fDetectorLogical; }
-    G4VPhysicalVolume* GetDetectorPhysicalVolume() { return fDetectorPhysical; }
-
-    void SetDetectorZPosition(G4double aVal) { fDetectorPlanePositionZ = aVal; }
-    void SetfReflectivity(G4double bVal = 0.9) { fReflectivity = bVal; }
+public:
+  WaterCherenkovDetectorConstruction();
+  ~WaterCherenkovDetectorConstruction();
+  
+  G4VPhysicalVolume* Construct();
+  
+  G4LogicalVolume* GetDetectorLogicalVolume() { return fDetectorLogical; }
+  G4VPhysicalVolume* GetDetectorPhysicalVolume() { return fDetectorPhysical; }
+  
+  void SetDetectorZPosition(G4double aVal) { fDetectorPlanePositionZ = aVal; }
+  void SetfReflectivity(G4double bVal = 0.9) { fReflectivity = bVal; }
+  void SetfAbsConstant(G4double cVal = 1) { fAbsConstant = cVal; }
+  G4double GetReflectivity() {
+    return fReflectivity;
+  }
 
   private:
     G4double fExpHallX;
@@ -76,6 +80,7 @@ class WaterCherenkovDetectorConstruction : public G4VUserDetectorConstruction
     G4double fDetectorPlanePositionZ;
 
     G4double fReflectivity;
+    G4double fAbsConstant;
 
     WaterCherenkovDetectorMessenger *detectorMessenger;
 

@@ -50,7 +50,7 @@
 #include "G4ios.hh"
 
 #include "WaterCherenkovDetectorConstruction.hh"
-#include "WaterCherenkovPhysicsList.hh"
+#include "ExN06PhysicsList.hh"
 #include "WaterCherenkovPrimaryGeneratorAction.hh"
 #include "WaterCherenkovRunAction.hh"
 #include "WaterCherenkovEventAction.hh"
@@ -59,7 +59,7 @@
 #include "WaterCherenkovSteppingVerbose.hh"
 
 #include "TROOT.h"
-
+#include "time.h"
 #include "Randomize.hh"
 
 #ifdef G4VIS_USE
@@ -70,10 +70,14 @@
 
 int main(int argc,char** argv)
 {
-  // Seed the random number generator manually
+  // choose the Random engine
   //
-  G4long myseed = 345354;
-  CLHEP::HepRandom::setTheSeed(myseed);
+  CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine());
+
+  // Set random seed with system time
+  //
+  G4long seed = time(NULL);
+  CLHEP::HepRandom::setTheSeed(seed);
   
   // User Verbose output class
   //
@@ -89,7 +93,7 @@ int main(int argc,char** argv)
   G4VUserDetectorConstruction* detector = new WaterCherenkovDetectorConstruction;
   runManager-> SetUserInitialization(detector);
   //
-  G4VUserPhysicsList* physics = new WaterCherenkovPhysicsList;
+  G4VUserPhysicsList* physics = new ExN06PhysicsList; //WaterCherenkovPhysicsList;
   runManager-> SetUserInitialization(physics);
   
 #ifdef G4VIS_USE

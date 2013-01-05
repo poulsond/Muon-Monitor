@@ -58,7 +58,7 @@ class WaterCherenkovDetectorMessenger: public G4UImessenger
     G4UIdirectory*               gasDir; 
   //G4UIcmdWithADoubleAndUnit*   planeCmd;
     G4UIcmdWithADouble*          reflectivityCmd;
-    G4UIcmdWithADouble*          reflectivityCmd2;  
+    G4UIcmdWithADouble*          absCmd;  
   //G4UIcmdWithADouble*   indexCmd;
     
 };

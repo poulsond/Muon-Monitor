@@ -41,6 +41,7 @@
 class WaterCherenkovRunAction;
 class G4UIdirectory;
 class G4UIcmdWithAString;
+class G4UIcmdWithADouble;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -53,9 +54,10 @@ class WaterCherenkovRunMessenger: public G4UImessenger
     void SetNewValue(G4UIcommand*, G4String);
     
   private:
-    WaterCherenkovRunAction* fRunAction;
-    G4UIdirectory*         fFileNameDir; 
-    G4UIcmdWithAString*    fFileNameCmd;
+  WaterCherenkovRunAction* fRunAction;
+  G4UIdirectory*           fFileNameDir; 
+  G4UIcmdWithAString*      fFileNameCmd;
+  G4UIcmdWithADouble*      fReflectivity;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

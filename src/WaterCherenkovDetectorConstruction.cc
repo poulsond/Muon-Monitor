@@ -356,7 +356,7 @@ n                                        absorptionIndexAl,numEntriesAl);
   OpAlSurface->SetType(dielectric_metal);
   OpAlSurface->SetFinish(polished);
   OpAlSurface->SetModel(glisur);
-  //  OpAlSurface->SetModel(unified);
+  //OpAlSurface->SetModel(unified);
 
 
   G4LogicalBorderSurface* AluminumSurface = new G4LogicalBorderSurface(

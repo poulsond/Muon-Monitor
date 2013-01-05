@@ -49,29 +49,34 @@ class WaterCherenkovRunMessenger;
 
 class WaterCherenkovRunAction : public G4UserRunAction
 {
-  public:
-    WaterCherenkovRunAction();
-   ~WaterCherenkovRunAction();
-
-  public:
-    void BeginOfRunAction(const G4Run* aRun);
-    void EndOfRunAction(const G4Run* aRun);
-    void InitializeTree();
-    void SetFileName(G4String aName) { 
-      fFileName = aName; 
-      G4cout << "Setting file name to " << fFileName << G4endl;
-    }
-
-    TTree *GetTree() { return fTree; }
-    TFile *GetFile() { return fFile; }
-
-  private:
-    G4Timer* timer;
-    TFile *  fFile;
-    TTree *  fTree;
-    G4String fFileName;
-    WaterCherenkovRunMessenger* runMessenger;
-};
+public:
+  WaterCherenkovRunAction();
+  ~WaterCherenkovRunAction();
+  
+public:
+  void BeginOfRunAction(const G4Run* aRun);
+  void EndOfRunAction(const G4Run* aRun);
+  void InitializeTree();
+  void SetFileName(G4String aName) { 
+    fFileName = aName; 
+    G4cout << "Setting file name to " << fFileName << G4endl;
+  }
+  void SetReflectivity(G4double H) {
+    fReflectivity = H;
+  }
+  
+  TTree *GetTree() { return fTree; }
+  TFile *GetFile() { return fFile; }
+  
+private:
+  G4Timer* timer;
+  TFile *  fFile;
+  TTree *  fTree;
+  TTree *  mTree;
+  G4String fFileName;
+  WaterCherenkovRunMessenger* runMessenger;
+  G4double fReflectivity;
+  };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

@@ -37,6 +37,7 @@
 #include "WaterCherenkovRunAction.hh"
 #include "G4UIdirectory.hh"
 #include "G4UIcmdWithAString.hh"
+#include "G4UIcmdWithADouble.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -49,6 +50,9 @@ WaterCherenkovRunMessenger::WaterCherenkovRunMessenger(
    
   fFileNameCmd = new G4UIcmdWithAString("/WaterCherenkov/fileName/fileName",this);
   fFileNameCmd->SetGuidance("Set name of output ROOT file");
+
+  //fReflectivity = new G4UIcmdWithADouble("/WaterCherenkov/Detector/Reflectivity",this);
+  
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -57,6 +61,7 @@ WaterCherenkovRunMessenger::~WaterCherenkovRunMessenger()
 {
   delete fFileNameCmd;
   delete fFileNameDir;
+  //delete fReflectivity;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -67,6 +72,10 @@ void WaterCherenkovRunMessenger::SetNewValue(
   if( command == fFileNameCmd ) {
     fRunAction->SetFileName(newValue);
   }
+  
+  /* if( command == fReflectivity ) {
+    fRunAction->SetReflectivity(fReflectivity->GetNewDoubleValue(newValue));
+    }*/
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
