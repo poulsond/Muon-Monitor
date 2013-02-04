@@ -87,6 +87,7 @@ void WaterCherenkovPhysicsList::ConstructParticle()
   ConstructLeptons();
   ConstructMesons();
   ConstructBaryons();
+  ConstructIons();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -127,6 +128,8 @@ void WaterCherenkovPhysicsList::ConstructMesons()
   G4PionPlus::PionPlusDefinition();
   G4PionMinus::PionMinusDefinition();
   G4PionZero::PionZeroDefinition();
+  G4KaonZeroLong::KaonZeroLongDefinition();
+  G4KaonZeroShort::KaonZeroShortDefinition();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -142,12 +145,22 @@ void WaterCherenkovPhysicsList::ConstructBaryons()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+void WaterCherenkovPhysicsList::ConstructIons()
+{
+  // ions
+  G4Alpha::AlphaDefinition();
+  G4Deuteron::DeuteronDefinition();
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 void WaterCherenkovPhysicsList::ConstructProcess()
 {
   AddTransportation();
   ConstructGeneral();
   ConstructEM();
   ConstructOp();
+  ConstructHp();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -171,7 +184,8 @@ void WaterCherenkovPhysicsList::ConstructGeneral()
       pmanager ->SetProcessOrdering(theDecayProcess, idxAtRest);
     }
   }
-}
+} 
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -253,10 +267,10 @@ void WaterCherenkovPhysicsList::ConstructOp()
   theRayleighScatteringProcess = new G4OpRayleigh();
   theBoundaryProcess      = new G4OpBoundaryProcess();
 
-  //   theCerenkovProcess->DumpPhysicsTable();
-  //   theScintillationProcess->DumpPhysicsTable();
-  //   theAbsorptionProcess->DumpPhysicsTable();
-  //   theRayleighScatteringProcess->DumpPhysicsTable();
+  theCerenkovProcess->DumpPhysicsTable();
+  theScintillationProcess->DumpPhysicsTable();
+  //  theAbsorptionProcess->DumpPhysicsTable();
+  theRayleighScatteringProcess->DumpPhysicsTable();
 
   SetVerbose(1);
   
@@ -295,6 +309,56 @@ void WaterCherenkovPhysicsList::ConstructOp()
 	pmanager->AddDiscreteProcess(theRayleighScatteringProcess);
 	pmanager->AddDiscreteProcess(theBoundaryProcess);
       }
+  }
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#include "G4MuonNucleusProcess.hh"
+#include "G4MuonMinusCaptureAtRest.hh"
+
+#include "G4HadronCaptureProcess.hh"
+#include "G4NeutronCaptureAtRest.hh"
+#include "G4NeutronInelasticProcess.hh"
+#include "G4HadronCaptureProcess.hh"
+
+#include "G4HadronElasticProcess.hh"
+#include "G4ProtonInelasticProcess.hh"
+
+void WaterCherenkovPhysicsList::ConstructHp()
+{
+  theParticleIterator->reset();
+  while( (*theParticleIterator)() ){
+    G4ParticleDefinition* nuc = theParticleIterator->value();
+    G4ProcessManager* nmanager = nuc->GetProcessManager();
+    G4String nucName = nuc->GetParticleName();
+
+    if (nucName == "mu-") {
+      // muon -
+      // Construct processes for muon -
+      nmanager->AddDiscreteProcess(new G4MuonNucleusProcess());
+      nmanager->AddRestProcess(new G4MuonMinusCaptureAtRest());
+      
+    } else if (nucName == "mu+") {
+      //muon +
+      // Construct processes for muon +
+      nmanager->AddDiscreteProcess(new G4MuonNucleusProcess());
+
+    } else if (nucName == "proton") {
+      //proton
+      // Construct processes for proton
+      nmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      nmanager->AddDiscreteProcess(new G4ProtonInelasticProcess());
+
+    } else if( nucName == "neutron" ) {
+      //neutron
+      // Construct processes for neutron
+      nmanager->AddDiscreteProcess(new G4HadronElasticProcess());
+      nmanager->AddDiscreteProcess(new G4NeutronInelasticProcess());
+      nmanager->AddRestProcess(new G4NeutronCaptureAtRest());
+      nmanager->AddDiscreteProcess(new G4HadronCaptureProcess());
+    
+    }
   }
 }
 

@@ -62,11 +62,13 @@ class WaterCherenkovPhysicsList : public G4VUserPhysicsList
     void ConstructLeptons();
     void ConstructMesons();
     void ConstructBaryons();
+    void ConstructIons();
 
     //these methods Construct physics processes and register them
     void ConstructGeneral();
     void ConstructEM();
     void ConstructOp();
+    void ConstructHp();
     
     //for the Messenger 
     void SetVerbose(G4int);
