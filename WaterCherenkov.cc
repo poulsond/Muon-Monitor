@@ -51,6 +51,10 @@
 
 #include "WaterCherenkovDetectorConstruction.hh"
 #include "ExN06PhysicsList.hh"
+#include "WaterCherenkovPhysicsList.hh"
+#include "G4HadronCaptureProcess.hh"
+#include "SFPhysicsList.hh"
+#include "LBE.hh"
 #include "WaterCherenkovPrimaryGeneratorAction.hh"
 #include "WaterCherenkovRunAction.hh"
 #include "WaterCherenkovEventAction.hh"
@@ -93,7 +97,7 @@ int main(int argc,char** argv)
   G4VUserDetectorConstruction* detector = new WaterCherenkovDetectorConstruction;
   runManager-> SetUserInitialization(detector);
   //
-  G4VUserPhysicsList* physics = new ExN06PhysicsList; //WaterCherenkovPhysicsList;
+  G4VUserPhysicsList* physics = new SFPhysicsList; // WaterCherenkovPhysicsList;
   runManager-> SetUserInitialization(physics);
   
 #ifdef G4VIS_USE
