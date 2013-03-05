@@ -15,7 +15,7 @@
 #include "SFLeptonPhysics.hh"
 #include "SFNeutronPhysics.hh"
 #include "SFHadronPhysics.hh"
-//#include "SFOpticalPhysics.hh"
+#include "SFOpticalPhysics.hh"
 #include "SFIonPhysics.hh"
 
 SFPhysicsList::SFPhysicsList():  G4VModularPhysicsList()
@@ -40,7 +40,7 @@ SFPhysicsList::SFPhysicsList():  G4VModularPhysicsList()
   RegisterPhysics( new SFHadronPhysics("hadron"));
 
   // Optical Physics
-  //  RegisterPhysics( new SFOpticalPhysics("optical"));
+  RegisterPhysics( new SFOpticalPhysics("optical"));
 
   // Ion Physics
   RegisterPhysics( new SFIonPhysics("ion"));
@@ -1016,7 +1016,7 @@ void SFNeutronPhysics::ConstructProcess()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //Optical Physics
-/*
+
 #include "G4LossTableManager.hh"
 
 //Processes
@@ -1044,18 +1044,24 @@ void SFOpticalPhysics::ConstructParticle()
 
 void SFOpticalPhysics::ConstructProcess()
 {
-  theCerenkovProcess           = new G4Cerenkov("Cerenkov");
-  theScintillationProcess = new G4Scintillation("Scintillation");
-  theAbsorptionProcess     = new G4OpAbsorption();
-  theRayleighScatteringProcess = new G4OpRayleigh();
-  theBoundaryProcess  = new G4OpBoundaryProcess();
+  G4Cerenkov *theCerenkovProcess           = new G4Cerenkov("Cerenkov");
+  G4Scintillation *theScintillationProcess = new G4Scintillation("Scintillation");
+  G4OpAbsorption *theAbsorptionProcess     = new G4OpAbsorption();
+  G4OpRayleigh *theRayleighScatteringProcess = new G4OpRayleigh();
+  G4OpBoundaryProcess *theBoundaryProcess  = new G4OpBoundaryProcess();
 
   //  theCerenkovProcess->DumpPhysicsTable();
   //  theScintillationProcess->DumpPhysicsTable();
   //  theAbsorptionProcess->DumpPhysicsTable();
   //  theRayleighScatteringProcess->DumpPhysicsTable();
 
-  SetVerbose(1);
+  G4int verbose = 1;
+  theCerenkovProcess->SetVerboseLevel(verbose);
+  theScintillationProcess->SetVerboseLevel(verbose);
+  theAbsorptionProcess->SetVerboseLevel(verbose);
+  theRayleighScatteringProcess->SetVerboseLevel(verbose);
+  theBoundaryProcess->SetVerboseLevel(verbose);  
+
   
   theCerenkovProcess->SetMaxNumPhotonsPerStep(20);
   theCerenkovProcess->SetMaxBetaChangePerStep(10.0);
@@ -1094,7 +1100,7 @@ void SFOpticalPhysics::ConstructProcess()
     }
   }
 }
-*/
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //Ion Physics
 

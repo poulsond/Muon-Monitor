@@ -64,13 +64,14 @@ void WaterCherenkovPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   G4Gun->SetParticleMomentumDirection(G4ThreeVector(1,0,0));
  
   //should be in cyclindrical coordinates
-  G4double X = (G4UniformRand()-0.5)*2*10.15*cm;
-  G4double Y = (G4UniformRand()-0.5)*2*10.15*cm;
-  G4double Z = (G4UniformRand()-0.5)*2*10.15*cm;
+  G4double MaxRadius = 15.0*cm; //can is 10.15cm
+  G4double X = (G4UniformRand()-0.5)*2*MaxRadius;
+  G4double Y = (G4UniformRand()-0.5)*2*MaxRadius;
+  G4double Z = (G4UniformRand()-0.5)*2*MaxRadius;
 
-  while(sqrt(X*X+Y*Y)>10.15*cm){
-      X = (G4UniformRand()-0.5)*2*10.15*cm;
-      Y = (G4UniformRand()-0.5)*2*10.15*cm;
+  while(sqrt(X*X+Y*Y)>MaxRadius){
+      X = (G4UniformRand()-0.5)*2*MaxRadius;
+      Y = (G4UniformRand()-0.5)*2*MaxRadius;
   }
 
   G4Gun->SetParticlePosition(G4ThreeVector(X, Y, Z));
