@@ -46,8 +46,35 @@ void WaterCherenkovSteppingAction::UserSteppingAction(const G4Step *theStep)
     {
         fPostVolume = NULL;
     }
+  
+  //Record the event type when the primary particle changes
+  if(theStep->GetPostStepPoint()->GetProcessDefinedStep() != 0){
+    //this returns a G4String
+    G4String processname = fStep->GetPostStepPoint()->
+      GetProcessDefinedStep()->GetProcessName();
+
     
- 
+    
+    //There's also ->GetProcessType() at the end of that which returns
+    // type G4ProcessType, which is an enum defined thusly:
+    // 0: undefined          4: Hadronic
+    // 1: transportation     5: Photolepton_hadron
+    // 2: electromagnetic    6: Decay
+    // 3: optical            7: General
+    //
+    // G4ProcessType, as an enum, can be cast as an int:
+    G4Int processtype = (G4Int)fStep->GetPostStepPoint()->
+      GetProcessDefinedStep()->GetProcessType();
+
+    //If it's particle transport or "undefined" we don't care, so 
+
+    //if(processtype>1){
+    //  WRITE IT TO FILE!
+    //}
+    
+  }
+
+  //record the photon when it enters the detector volume
   if(fPostVolume == fDetectorVolume)
     {
     if(fPreVolume !=fDetectorVolume)
@@ -74,6 +101,9 @@ void WaterCherenkovSteppingAction::UserSteppingAction(const G4Step *theStep)
 	}
     }
   }
+
+  
+
   
 }
 
