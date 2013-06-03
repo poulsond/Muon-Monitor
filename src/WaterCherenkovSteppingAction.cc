@@ -50,7 +50,7 @@ void WaterCherenkovSteppingAction::UserSteppingAction(const G4Step *theStep)
   //Record the event type when the primary particle changes
   if(theStep->GetPostStepPoint()->GetProcessDefinedStep() != 0){
     //this returns a G4String
-    G4String processname = fStep->GetPostStepPoint()->
+    G4String processname = theStep->GetPostStepPoint()->
       GetProcessDefinedStep()->GetProcessName();
 
     
@@ -63,7 +63,7 @@ void WaterCherenkovSteppingAction::UserSteppingAction(const G4Step *theStep)
     // 3: optical            7: General
     //
     // G4ProcessType, as an enum, can be cast as an int:
-    G4Int processtype = (G4Int)fStep->GetPostStepPoint()->
+    G4int processtype = (G4int)theStep->GetPostStepPoint()->
       GetProcessDefinedStep()->GetProcessType();
 
     //If it's particle transport or "undefined" we don't care, so 
