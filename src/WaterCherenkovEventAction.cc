@@ -56,19 +56,20 @@ void WaterCherenkovEventAction::BeginOfEventAction(const G4Event* anEvent)
 {
   fNHits = 0;
   fNPhotons = 0;
-  indexnum = 0;
+  interactionNum = 0;
+  leptonNum = 0;
   ResetArrays();
-  fPrimePosX = anEvent->GetPrimaryVertex()->GetX0()/cm;
-  fPrimePosY = anEvent->GetPrimaryVertex()->GetY0()/cm;
-  fPrimePosZ = anEvent->GetPrimaryVertex()->GetZ0()/cm;
+  fPrimePosX_cm = anEvent->GetPrimaryVertex()->GetX0()/cm;
+  fPrimePosY_cm = anEvent->GetPrimaryVertex()->GetY0()/cm;
+  fPrimePosZ_cm = anEvent->GetPrimaryVertex()->GetZ0()/cm;
   fPrimeMomX = anEvent->GetPrimaryVertex()->GetPrimary()->GetPx();
   fPrimeMomY = anEvent->GetPrimaryVertex()->GetPrimary()->GetPy();
   fPrimeMomZ = anEvent->GetPrimaryVertex()->GetPrimary()->GetPz();
 
   //The following six lines may not be neccessary 
-  lPrimePosX[indexnum] = anEvent->GetPrimaryVertex()->GetX0()/cm;
-  lPrimePosY[indexnum] = anEvent->GetPrimaryVertex()->GetY0()/cm;
-  lPrimePosZ[indexnum] = anEvent->GetPrimaryVertex()->GetZ0()/cm;
+  //lPrimePosX_cm[indexnum] = anEvent->GetPrimaryVertex()->GetX0()/cm;
+  //lPrimePosY_cm[indexnum] = anEvent->GetPrimaryVertex()->GetY0()/cm;
+  //lPrimePosZ_cm[indexnum] = anEvent->GetPrimaryVertex()->GetZ0()/cm;
   //lPrimeMomX[indexnum] = anEvent->GetPrimaryVertex()->GetPrimary()->GetPx();
   //lPrimeMomY[indexnum] = anEvent->GetPrimaryVertex()->GetPrimary()->GetPy();
   //lPrimeMomZ[indexnum] = anEvent->GetPrimaryVertex()->GetPrimary()->GetPz();
@@ -80,18 +81,18 @@ void WaterCherenkovEventAction::ResetArrays()
 {
   for(G4int i = 0; i<kPMax; i++)
   {
-    fPlaneX[i] = 0;
-    fPlaneY[i] = 0;
-    fPlaneZ[i] = 0;
-    fPlaneT[i] = 0;
-    fTrackX[i] = 0;
-    fTrackY[i] = 0;
-    fTrackZ[i] = 0;
-    fWavelength[i] = 0;
+    fPlaneX_cm[i] = 0;
+    fPlaneY_cm[i] = 0;
+    fPlaneZ_cm[i] = 0;
+    fPlaneT_ns[i] = 0;
+    fTrackX_cm[i] = 0;
+    fTrackY_cm[i] = 0;
+    fTrackZ_cm[i] = 0;
+    fWavelength_nm[i] = 0;
     lDefinition[i] = 0;
-    lPrimePosX[i] = 0;
-    lPrimePosY[i] = 0;
-    lPrimePosZ[i] = 0;
+    lPrimePosX_cm[i] = 0;
+    lPrimePosY_cm[i] = 0;
+    lPrimePosZ_cm[i] = 0;
     lPrimeMomX[i] = 0;
     lPrimeMomY[i] = 0;
     lPrimeMomZ[i] = 0;

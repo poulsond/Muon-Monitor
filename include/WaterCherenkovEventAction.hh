@@ -60,49 +60,40 @@ public:
   void AddLepton(G4ThreeVector initialPos, G4ThreeVector initialMom, 
 		 G4int definition)
   {
-    if ( indexnum > kPMax )
+    if ( leptonNum > kPMax )
       {
 	G4cout << " *** Error!: Hit array too small!  Fix me!" << G4endl;
 	G4cout << " ***       : Keeping array sized at kPMax: " << kPMax << G4endl;
-	indexnum = kPMax-1; // to prevent exceeding array size
+	leptonNum = kPMax-1; // to prevent exceeding array size
       }
     
-    lDefinition[indexnum] = definition;
-    lPrimePosX[indexnum] = initialPos.x()/cm;
-    lPrimePosY[indexnum] = initialPos.y()/cm;
-    lPrimePosZ[indexnum] = initialPos.z()/cm;
-    lPrimeMomX[indexnum] = initialMom.x()/cm;
-    lPrimeMomY[indexnum] = initialMom.y()/cm;
-    lPrimeMomZ[indexnum] = initialMom.z()/cm;
-    indexnum++;
+    lDefinition[leptonNum] = definition;
+    lPrimePosX_cm[leptonNum] = initialPos.x()/cm;
+    lPrimePosY_cm[leptonNum] = initialPos.y()/cm;
+    lPrimePosZ_cm[leptonNum] = initialPos.z()/cm;
+    lPrimeMomX[leptonNum] = initialMom.x()/keV;
+    lPrimeMomY[leptonNum] = initialMom.y()/keV;
+    lPrimeMomZ[leptonNum] = initialMom.z()/keV;
+    leptonNum++;
   }
-
-  void AddProcess(G4int interaction)
+  
+  void AddProcess(G4int interaction, G4ThreeVector eventPos, G4int PDG)
   {
-    if ( indexnum > kPMax )
+    if ( interactionNum > kPMax )
       {
 	G4cout << " *** Error!: Hit array too small!  Fix me!" << G4endl;
 	G4cout << " ***       : Keeping array sized at kPMax: " << kPMax << G4endl;
-	indexnum = kPMax-1; // to prevent exceeding array size
+	interactionNum = kPMax-1; // to prevent exceeding array size
       }
     
-    lProcessType[indexnum] = interaction;
+    lProcessType[interactionNum] = interaction;
+    GPrimePosX_cm[interactionNum] = eventPos.x()/cm;
+    GPrimePosY_cm[interactionNum] = eventPos.y()/cm;
+    GPrimePosZ_cm[interactionNum] = eventPos.z()/cm;
+    pDefinition[interactionNum] = PDG;
+    interactionNum++;
   }
-
-  void PhotonPos(G4ThreeVector initialPos)
-    {
-    if ( indexnum > kPMax )
-      {
-	G4cout << " *** Error!: Hit array too small!  Fix me!" << G4endl;
-	G4cout << " ***       : Keeping array sized at kPMax: " << kPMax << G4endl;
-	indexnum = kPMax-1; // to prevent exceeding array size
-      }
-    
-    GPrimePosX[indexnum] = initialPos.x()/cm;
-    GPrimePosY[indexnum] = initialPos.y()/cm;
-    GPrimePosZ[indexnum] = initialPos.z()/cm;
-  }
-
+  
   void AddHit(G4ThreeVector planePos,   G4double globalTime, 
 	      G4ThreeVector initialPos, G4double wavelength)
   {
@@ -112,43 +103,46 @@ public:
 	G4cout << " ***       : Keeping array sized at kPMax: " << kPMax << G4endl;
 	fNHits = kPMax-1; // to prevent exceeding array size
       }
-    fPlaneX[fNHits] = planePos.x()/cm;
-    fPlaneY[fNHits] = planePos.y()/cm;
-    fPlaneZ[fNHits] = planePos.z()/cm;
-    fPlaneT[fNHits] = globalTime/ns;
-    fTrackX[fNHits] = initialPos.x()/cm;
-    fTrackY[fNHits] = initialPos.y()/cm;
-    fTrackZ[fNHits] = initialPos.z()/cm;
-    fWavelength[fNHits] = wavelength;
+    fPlaneX_cm[fNHits] = planePos.x()/cm;
+    fPlaneY_cm[fNHits] = planePos.y()/cm;
+    fPlaneZ_cm[fNHits] = planePos.z()/cm;
+    fPlaneT_ns[fNHits] = globalTime/ns;
+    fTrackX_cm[fNHits] = initialPos.x()/cm;
+    fTrackY_cm[fNHits] = initialPos.y()/cm;
+    fTrackZ_cm[fNHits] = initialPos.z()/cm;
+    fWavelength_nm[fNHits] = wavelength;
     fNHits++;
   }
+
   // Optical Photon Stuff //
   int    *GetNHits()      { return &fNHits; }
   int    *GetPhotonHits() { return &fNPhotons; }
-  double *GetPlaneX() { return fPlaneX; }
-  double *GetPlaneY() { return fPlaneY; }
-  double *GetPlaneZ() { return fPlaneZ; }
-  double *GetPlaneT() { return fPlaneT; }
-  double *GetTrackX() { return fTrackX; }
-  double *GetTrackY() { return fTrackY; }
-  double *GetTrackZ() { return fTrackZ; }
-  double *GetPrimaryPositionX() { return &fPrimePosX; }
-  double *GetPrimaryPositionY() { return &fPrimePosY; }
-  double *GetPrimaryPositionZ() { return &fPrimePosZ; }
+  double *GetPlaneX() { return fPlaneX_cm; }
+  double *GetPlaneY() { return fPlaneY_cm; }
+  double *GetPlaneZ() { return fPlaneZ_cm; }
+  double *GetPlaneT() { return fPlaneT_ns; }
+  double *GetTrackX() { return fTrackX_cm; }
+  double *GetTrackY() { return fTrackY_cm; }
+  double *GetTrackZ() { return fTrackZ_cm; }
+  double *GetPrimaryPositionX() { return &fPrimePosX_cm; }
+  double *GetPrimaryPositionY() { return &fPrimePosY_cm; }
+  double *GetPrimaryPositionZ() { return &fPrimePosZ_cm; }
   double *GetPrimaryMomentumX() { return &fPrimeMomX; }
   double *GetPrimaryMomentumY() { return &fPrimeMomY; }
   double *GetPrimaryMomentumZ() { return &fPrimeMomZ; }
-  double *GetWavelength()       { return fWavelength; }
-  double *GetGPrimaryPositionX() { return GPrimePosX;   }
-  double *GetGPrimaryPositionY() { return GPrimePosY;   }
-  double *GetGPrimaryPositionZ() { return GPrimePosZ;   }  
-
+  double *GetWavelength()       { return fWavelength_nm; }
+  double *GetGPrimaryPositionX() { return GPrimePosX_cm;   }
+  double *GetGPrimaryPositionY() { return GPrimePosY_cm;   }
+  double *GetGPrimaryPositionZ() { return GPrimePosZ_cm;   }  
+  
   // Lepton Stuff //
   int    *GetlDefinition()       { return lDefinition;  }
-  int    *Getindexnum()          { return &indexnum;    }
-  double *GetlPrimaryPositionX() { return lPrimePosX;   }
-  double *GetlPrimaryPositionY() { return lPrimePosY;   }
-  double *GetlPrimaryPositionZ() { return lPrimePosZ;   }
+  int    *GetpDefinition()       { return pDefinition;  }
+  int    *GetleptonNum()         { return &leptonNum;   }
+  int    *GetinteractionNum()    { return &interactionNum; }
+  double *GetlPrimaryPositionX() { return lPrimePosX_cm;   }
+  double *GetlPrimaryPositionY() { return lPrimePosY_cm;   }
+  double *GetlPrimaryPositionZ() { return lPrimePosZ_cm;   }
   double *GetlPrimaryMomentumX() { return lPrimeMomX;   }
   double *GetlPrimaryMomentumY() { return lPrimeMomY;   }
   double *GetlPrimaryMomentumZ() { return lPrimeMomZ;   }
@@ -162,34 +156,36 @@ private:
   // Optical Photon Stuff //
   G4int  fNPhotons;
   G4int  fNHits;
-  double fPlaneX[kPMax];
-  double fPlaneY[kPMax];
-  double fPlaneZ[kPMax];
-  double fPlaneT[kPMax];
-  double fTrackX[kPMax];
-  double fTrackY[kPMax];
-  double fTrackZ[kPMax];
-  double fPrimePosX;
-  double fPrimePosY;
-  double fPrimePosZ;
+  double fPlaneX_cm[kPMax];
+  double fPlaneY_cm[kPMax];
+  double fPlaneZ_cm[kPMax];
+  double fPlaneT_ns[kPMax];
+  double fTrackX_cm[kPMax];
+  double fTrackY_cm[kPMax];
+  double fTrackZ_cm[kPMax];
+  double fPrimePosX_cm;
+  double fPrimePosY_cm;
+  double fPrimePosZ_cm;
   double fPrimeMomX;
   double fPrimeMomY;
   double fPrimeMomZ;
-  double fWavelength[kPMax];
-  double GPrimePosX[kPMax];
-  double GPrimePosY[kPMax];
-  double GPrimePosZ[kPMax];
+  double fWavelength_nm[kPMax];
+  double GPrimePosX_cm[kPMax];
+  double GPrimePosY_cm[kPMax];
+  double GPrimePosZ_cm[kPMax];
   
   // Lepton Stuff //
   G4int  lDefinition[kPMax];
-  G4int  indexnum;
-  double lPrimePosX[kPMax];
-  double lPrimePosY[kPMax];
-  double lPrimePosZ[kPMax];
+  G4int  pDefinition[kPMax];
+  G4int  leptonNum;
+  G4int  interactionNum;
+  double lPrimePosX_cm[kPMax];
+  double lPrimePosY_cm[kPMax];
+  double lPrimePosZ_cm[kPMax];
   double lPrimeMomX[kPMax];
   double lPrimeMomY[kPMax];
   double lPrimeMomZ[kPMax];
-
+  
   // Process Stuff //
   G4int  lProcessType[kPMax];
 };

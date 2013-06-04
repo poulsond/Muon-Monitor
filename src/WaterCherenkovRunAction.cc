@@ -107,7 +107,8 @@ void WaterCherenkovRunAction::InitializeTree()
 
   TTree *tempTree = new TTree("fTree", "");
   tempTree->Branch("fNHits",        theEvent->GetNHits(),            "fNHits/I");
-  tempTree->Branch("indexnum",      theEvent->Getindexnum(),         "indexnum/I");
+  tempTree->Branch("leptonNum",     theEvent->GetleptonNum(),        "leptonNum/I");
+  tempTree->Branch("interactionNum",theEvent->GetleptonNum(),        "interactionNum/I");
   tempTree->Branch("fNPhotons",     theEvent->GetPhotonHits(),       "fNPhotons/I");
   tempTree->Branch("fPlaneX_cm",    theEvent->GetPlaneX(),           "fPlaneX_cm[fNHits]/D");
   tempTree->Branch("fPlaneY_cm",    theEvent->GetPlaneY(),           "fPlaneY_cm[fNHits]/D");
@@ -123,17 +124,18 @@ void WaterCherenkovRunAction::InitializeTree()
   tempTree->Branch("fPrimeMomY",    theEvent->GetPrimaryMomentumY(), "fPrimeMomY/D");
   tempTree->Branch("fPrimeMomZ",    theEvent->GetPrimaryMomentumZ(), "fPrimeMomZ/D");
   tempTree->Branch("fWavelength_nm",theEvent->GetWavelength(),       "fWavelength_nm[fNHits]/D");
-  tempTree->Branch("lPrimePosX",    theEvent->GetlPrimaryPositionX(),"lPrimePosX[indexnum]/D");
-  tempTree->Branch("lPrimePosY",    theEvent->GetlPrimaryPositionY(),"lPrimePosY[indexnum]/D");
-  tempTree->Branch("lPrimePosZ",    theEvent->GetlPrimaryPositionZ(),"lPrimePosZ[indexnum]/D"); 
-  tempTree->Branch("lPrimeMomX",    theEvent->GetlPrimaryMomentumX(),"lPrimeMomX[indexnum]/D");
-  tempTree->Branch("lPrimeMomY",    theEvent->GetlPrimaryMomentumY(),"lPrimeMomY[indexnum]/D");
-  tempTree->Branch("lPrimeMomZ",    theEvent->GetlPrimaryMomentumZ(),"lPrimeMomZ[indexnum]/D");
-  tempTree->Branch("lDefinition",   theEvent->GetlDefinition(),      "lDefinition[indexnum]/I");
-  tempTree->Branch("lProcessType",  theEvent->GetlProcessType(),     "lProcessType[indexnum]/I");
-  tempTree->Branch("GPrimePosX",    theEvent->GetGPrimaryPositionX(),"GPrimePosX[indexnum]/D");
-  tempTree->Branch("GPrimePosY",    theEvent->GetGPrimaryPositionY(),"GPrimePosY[indexnum]/D");
-  tempTree->Branch("GPrimePosZ",    theEvent->GetGPrimaryPositionZ(),"GPrimePosZ[indexnum]/D"); 
+  tempTree->Branch("lPrimePosX_cm", theEvent->GetlPrimaryPositionX(),"lPrimePosX_cm[leptonNum]/D");
+  tempTree->Branch("lPrimePosY_cm", theEvent->GetlPrimaryPositionY(),"lPrimePosY_cm[leptonNum]/D");
+  tempTree->Branch("lPrimePosZ_cm", theEvent->GetlPrimaryPositionZ(),"lPrimePosZ_cm[leptonNum]/D"); 
+  tempTree->Branch("lPrimeMomX",    theEvent->GetlPrimaryMomentumX(),"lPrimeMomX[leptonNum]/D");
+  tempTree->Branch("lPrimeMomY",    theEvent->GetlPrimaryMomentumY(),"lPrimeMomY[leptonNum]/D");
+  tempTree->Branch("lPrimeMomZ",    theEvent->GetlPrimaryMomentumZ(),"lPrimeMomZ[leptonNum]/D");
+  tempTree->Branch("lDefinition",   theEvent->GetlDefinition(),      "lDefinition[leptonNum]/I");
+  tempTree->Branch("lProcessType",  theEvent->GetlProcessType(),     "lProcessType[interactionNum]/I");
+  tempTree->Branch("GPrimePosX_cm", theEvent->GetGPrimaryPositionX(),"GPrimePosX_cm[interactionNum]/D");
+  tempTree->Branch("GPrimePosY_cm", theEvent->GetGPrimaryPositionY(),"GPrimePosY_cm[interactionNum]/D");
+  tempTree->Branch("GPrimePosZ_cm", theEvent->GetGPrimaryPositionZ(),"GPrimePosZ_cm[interactionNum]/D"); 
+  tempTree->Branch("pDefinition",   theEvent->GetpDefinition(),      "pDefinition[interactionNum]/I"); 
 
   fTree = tempTree;
 

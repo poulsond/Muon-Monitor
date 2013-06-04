@@ -60,9 +60,6 @@ WaterCherenkovStackingAction::ClassifyNewTrack(const G4Track * aTrack)
       
       if(aTrack->GetDefinition() == G4OpticalPhoton::OpticalPhotonDefinition()) 
 	{
-	  G4ThreeVector PositionVector = aTrack -> GetPosition();
-	  
-       	  theEvent -> PhotonPos(PositionVector);
 	  theEvent -> AddPhoton();
 	  if(aTrack->GetParentID()>0)
 	    { // particle is secondary

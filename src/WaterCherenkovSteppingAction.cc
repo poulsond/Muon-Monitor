@@ -28,23 +28,23 @@ WaterCherenkovSteppingAction::~WaterCherenkovSteppingAction()
 void WaterCherenkovSteppingAction::UserSteppingAction(const G4Step *theStep)
 {
   fDetectorVolume = 
-  ((WaterCherenkovDetectorConstruction*)G4RunManager::GetRunManager()
-   ->GetUserDetectorConstruction())->GetDetectorLogicalVolume();
-
+    ((WaterCherenkovDetectorConstruction*)G4RunManager::GetRunManager()
+     ->GetUserDetectorConstruction())->GetDetectorLogicalVolume();
+  
   WaterCherenkovEventAction *theEvent =
-  (WaterCherenkovEventAction*)G4RunManager::GetRunManager()->GetUserEventAction();
-
+    (WaterCherenkovEventAction*)G4RunManager::GetRunManager()->GetUserEventAction();
+  
   fPreVolume = theStep->GetPreStepPoint()->GetPhysicalVolume()->GetLogicalVolume();
   //fPostVolume = theStep->GetPostStepPoint()->GetLogicalVolume();
   
   if(theStep->GetPostStepPoint()->GetPhysicalVolume())
     {
-       fPostVolume = theStep->GetPostStepPoint()->GetPhysicalVolume()->GetLogicalVolume();
+      fPostVolume = theStep->GetPostStepPoint()->GetPhysicalVolume()->GetLogicalVolume();
     }
-     
+  
   else 
     {
-        fPostVolume = NULL;
+      fPostVolume = NULL;
     }
   
   //Record the event type when the primary particle changes
@@ -52,7 +52,7 @@ void WaterCherenkovSteppingAction::UserSteppingAction(const G4Step *theStep)
     //this returns a G4String
     G4String processname = theStep->GetPostStepPoint()->
       GetProcessDefinedStep()->GetProcessName();
-
+    
     
     
     //There's also ->GetProcessType() at the end of that which returns
@@ -65,49 +65,44 @@ void WaterCherenkovSteppingAction::UserSteppingAction(const G4Step *theStep)
     // G4ProcessType, as an enum, can be cast as an int:
     G4int processtype = (G4int)theStep->GetPostStepPoint()->
       GetProcessDefinedStep()->GetProcessType();
-
+    
     //If it's particle transport or "undefined" we don't care, so 
-
+    
     G4int interaction = 0;
-
+    
     if(processtype>1){
       interaction = processtype;
-    
-      theEvent->AddProcess(interaction);
+      G4ThreeVector eventPos = theStep->GetPostStepPoint()->GetPosition();
+      G4int PDG = theStep->GetTrack()->GetDefinition()->GetPDGEncoding();
+      theEvent->AddProcess(interaction, eventPos, PDG);
     }
   }
-
+  
   //record the photon when it enters the detector volume
   if(fPostVolume == fDetectorVolume)
     {
-    if(fPreVolume !=fDetectorVolume)
-      {
-      if(theStep->GetTrack()->GetDefinition() == G4OpticalPhoton::OpticalPhotonDefinition())
+      if(fPreVolume !=fDetectorVolume)
 	{
-	  // then we have just entered the detector plane, so let's record the
-	  // useful info (the track has the GetVertexPosition, GetGlobalTime,
-	  // Get Position at the plane)
-
-	  G4ThreeVector planePosition = theStep->GetPostStepPoint()->GetPosition();
-	  double globalTime = theStep->GetPostStepPoint()->GetGlobalTime();
-	  // Get initial position of track
-	  G4ThreeVector initialPosition = theStep->GetTrack()->GetVertexPosition();
-	  double wavelength = 
-	    (197*2*3.14159)/
-	    (theStep->GetPostStepPoint()->GetTotalEnergy()/eV);
-          // because hbar*c = 197MeV*fm = 197 eV*nm
-	  //G4cout << "Particle Identity = " << theStep->GetTrack()->GetDefinition() << G4endl;
-	  //  G4cout << "HIT DETECTED! About to AddHit..." << G4endl;
-	  theEvent->AddHit(planePosition, globalTime, initialPosition, wavelength);
-	  
-	  theStep->GetTrack()->SetTrackStatus(fKillTrackAndSecondaries);
+	  if(theStep->GetTrack()->GetDefinition() == G4OpticalPhoton::OpticalPhotonDefinition())
+	    {
+	      // then we have just entered the detector plane, so let's record the
+	      // useful info (the track has the GetVertexPosition, GetGlobalTime,
+	      // Get Position at the plane)
+	      
+	      G4ThreeVector planePosition = theStep->GetPostStepPoint()->GetPosition();
+	      double globalTime = theStep->GetPostStepPoint()->GetGlobalTime();
+	      // Get initial position of track
+	      G4ThreeVector initialPosition = theStep->GetTrack()->GetVertexPosition();
+	      double wavelength = 
+		(197*2*3.14159)/
+		(theStep->GetPostStepPoint()->GetTotalEnergy()/eV);
+	      // because hbar*c = 197MeV*fm = 197 eV*nm
+	      //G4cout << "Particle Identity = " << theStep->GetTrack()->GetDefinition() << G4endl;
+	      //  G4cout << "HIT DETECTED! About to AddHit..." << G4endl;
+	      theEvent->AddHit(planePosition, globalTime, initialPosition, wavelength);
+	      //theEvent->OneUp();
+	      theStep->GetTrack()->SetTrackStatus(fKillTrackAndSecondaries);
+	    }
 	}
     }
-  }
-
-  
-
-  
 }
-
-
