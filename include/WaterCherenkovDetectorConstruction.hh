@@ -59,6 +59,9 @@ public:
   G4double GetReflectivity() {
     return fReflectivity;
   }
+  G4double GetAbsConstant() {
+    return fAbsConstant;
+  }
 
   private:
     G4double fExpHallX;

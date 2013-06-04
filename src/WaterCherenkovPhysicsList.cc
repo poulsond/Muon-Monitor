@@ -314,6 +314,7 @@ void WaterCherenkovPhysicsList::ConstructOp()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+
 #include "G4MuonNucleusProcess.hh"
 #include "G4MuonMinusCaptureAtRest.hh"
 
@@ -343,7 +344,7 @@ void WaterCherenkovPhysicsList::ConstructHp()
       //muon +
       // Construct processes for muon +
       nmanager->AddDiscreteProcess(new G4MuonNucleusProcess());
-
+      
     } else if (nucName == "proton") {
       //proton
       // Construct processes for proton
@@ -357,7 +358,7 @@ void WaterCherenkovPhysicsList::ConstructHp()
       nmanager->AddDiscreteProcess(new G4NeutronInelasticProcess());
       nmanager->AddRestProcess(new G4NeutronCaptureAtRest());
       nmanager->AddDiscreteProcess(new G4HadronCaptureProcess());
-    
+      
     }
   }
 }

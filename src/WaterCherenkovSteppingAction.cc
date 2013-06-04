@@ -68,10 +68,13 @@ void WaterCherenkovSteppingAction::UserSteppingAction(const G4Step *theStep)
 
     //If it's particle transport or "undefined" we don't care, so 
 
-    //if(processtype>1){
-    //  WRITE IT TO FILE!
-    //}
+    G4int interaction = 0;
+
+    if(processtype>1){
+      interaction = processtype;
     
+      theEvent->AddProcess(interaction);
+    }
   }
 
   //record the photon when it enters the detector volume

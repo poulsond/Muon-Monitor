@@ -66,9 +66,9 @@ void WaterCherenkovEventAction::BeginOfEventAction(const G4Event* anEvent)
   fPrimeMomZ = anEvent->GetPrimaryVertex()->GetPrimary()->GetPz();
 
   //The following six lines may not be neccessary 
-  //lPrimePosX[indexnum] = anEvent->GetPrimaryVertex()->GetX0()/cm;
-  //lPrimePosY[indexnum] = anEvent->GetPrimaryVertex()->GetY0()/cm;
-  //lPrimePosZ[indexnum] = anEvent->GetPrimaryVertex()->GetZ0()/cm;
+  lPrimePosX[indexnum] = anEvent->GetPrimaryVertex()->GetX0()/cm;
+  lPrimePosY[indexnum] = anEvent->GetPrimaryVertex()->GetY0()/cm;
+  lPrimePosZ[indexnum] = anEvent->GetPrimaryVertex()->GetZ0()/cm;
   //lPrimeMomX[indexnum] = anEvent->GetPrimaryVertex()->GetPrimary()->GetPx();
   //lPrimeMomY[indexnum] = anEvent->GetPrimaryVertex()->GetPrimary()->GetPy();
   //lPrimeMomZ[indexnum] = anEvent->GetPrimaryVertex()->GetPrimary()->GetPz();

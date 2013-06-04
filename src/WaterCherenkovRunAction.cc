@@ -130,19 +130,37 @@ void WaterCherenkovRunAction::InitializeTree()
   tempTree->Branch("lPrimeMomY",    theEvent->GetlPrimaryMomentumY(),"lPrimeMomY[indexnum]/D");
   tempTree->Branch("lPrimeMomZ",    theEvent->GetlPrimaryMomentumZ(),"lPrimeMomZ[indexnum]/D");
   tempTree->Branch("lDefinition",   theEvent->GetlDefinition(),      "lDefinition[indexnum]/I");
+  tempTree->Branch("lProcessType",  theEvent->GetlProcessType(),     "lProcessType[indexnum]/I");
+  tempTree->Branch("GPrimePosX",    theEvent->GetGPrimaryPositionX(),"GPrimePosX[indexnum]/D");
+  tempTree->Branch("GPrimePosY",    theEvent->GetGPrimaryPositionY(),"GPrimePosY[indexnum]/D");
+  tempTree->Branch("GPrimePosZ",    theEvent->GetGPrimaryPositionZ(),"GPrimePosZ[indexnum]/D"); 
 
   fTree = tempTree;
 
   TTree *memoTree = new TTree("memoTree", "");
+  // absConstant
+  G4double AbsConstant = 0;
+  memoTree->Branch("AbsConstant", &AbsConstant, "AbsConstant/D");
+
+  // reflectivity
   G4double Reflectivity = 0;
   memoTree->Branch("Reflectivity", &Reflectivity,  "Reflectivity/D");
-  
+
+  // particle
+  //G4string ParticleName = 0;
+  //  memoTree->Branch("ParticleName", &ParticleName, "ParticleName/D");
+
+  // mTree
   mTree = memoTree;
 
   WaterCherenkovDetectorConstruction *Detector =
-  (WaterCherenkovDetectorConstruction*)G4RunManager::GetRunManager()->GetUserDetectorConstruction();
- 
+    (WaterCherenkovDetectorConstruction*)G4RunManager::GetRunManager()->GetUserDetectorConstruction();
+  
+  //  WaterCherenkovPrimaryGeneratorAction *Generator = 
+  //    (WaterCherenkovPrimaryGeneratorAction*)G4RunManager::GetRunManager()->GetUsergeneratorAction();
+
   Reflectivity = Detector->GetReflectivity();
+  AbsConstant = Detector->GetAbsConstant();
   mTree->Fill();
 
 }

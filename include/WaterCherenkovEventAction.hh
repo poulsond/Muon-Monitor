@@ -29,7 +29,7 @@
 //
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
- 
+
 #ifndef WaterCherenkovEventAction_h
 #define WaterCherenkovEventAction_h 1
 
@@ -46,114 +46,152 @@ class WaterCherenkovRunAction;
 
 class WaterCherenkovEventAction : public G4UserEventAction
 {
-  public:
-    WaterCherenkovEventAction(WaterCherenkovRunAction *);
-   ~WaterCherenkovEventAction();
+public:
+  WaterCherenkovEventAction(WaterCherenkovRunAction *);
+  ~WaterCherenkovEventAction();
+  
+public:
+  void BeginOfEventAction(const G4Event*);
+  void EndOfEventAction(const G4Event*);
+  void AddPhoton(){ fNPhotons++; }
+  
+  void ResetArrays();
+  
+  void AddLepton(G4ThreeVector initialPos, G4ThreeVector initialMom, 
+		 G4int definition)
+  {
+    if ( indexnum > kPMax )
+      {
+	G4cout << " *** Error!: Hit array too small!  Fix me!" << G4endl;
+	G4cout << " ***       : Keeping array sized at kPMax: " << kPMax << G4endl;
+	indexnum = kPMax-1; // to prevent exceeding array size
+      }
+    
+    lDefinition[indexnum] = definition;
+    lPrimePosX[indexnum] = initialPos.x()/cm;
+    lPrimePosY[indexnum] = initialPos.y()/cm;
+    lPrimePosZ[indexnum] = initialPos.z()/cm;
+    lPrimeMomX[indexnum] = initialMom.x()/cm;
+    lPrimeMomY[indexnum] = initialMom.y()/cm;
+    lPrimeMomZ[indexnum] = initialMom.z()/cm;
+    indexnum++;
+  }
 
-  public:
-    void BeginOfEventAction(const G4Event*);
-    void EndOfEventAction(const G4Event*);
-    void AddPhoton(){ fNPhotons++; }
+  void AddProcess(G4int interaction)
+  {
+    if ( indexnum > kPMax )
+      {
+	G4cout << " *** Error!: Hit array too small!  Fix me!" << G4endl;
+	G4cout << " ***       : Keeping array sized at kPMax: " << kPMax << G4endl;
+	indexnum = kPMax-1; // to prevent exceeding array size
+      }
+    
+    lProcessType[indexnum] = interaction;
+  }
 
-    void ResetArrays();
-
-    void AddLepton(G4ThreeVector initialPos, G4ThreeVector initialMom, 
-                   G4int definition)
+  void PhotonPos(G4ThreeVector initialPos)
     {
-	if ( indexnum > kPMax )
-	{
-	  G4cout << " *** Error!: Hit array too small!  Fix me!" << G4endl;
-	  G4cout << " ***       : Keeping array sized at kPMax: " << kPMax << G4endl;
-	  indexnum = kPMax-1; // to prevent exceeding array size
-	}
-
-        lDefinition[indexnum] = definition;
-	lPrimePosX[indexnum] = initialPos.x()/cm;
-	lPrimePosY[indexnum] = initialPos.y()/cm;
-	lPrimePosZ[indexnum] = initialPos.z()/cm;
-	lPrimeMomX[indexnum] = initialMom.x()/cm;
-	lPrimeMomY[indexnum] = initialMom.y()/cm;
-	lPrimeMomZ[indexnum] = initialMom.z()/cm;
-	indexnum++;
-    }
+    if ( indexnum > kPMax )
+      {
+	G4cout << " *** Error!: Hit array too small!  Fix me!" << G4endl;
+	G4cout << " ***       : Keeping array sized at kPMax: " << kPMax << G4endl;
+	indexnum = kPMax-1; // to prevent exceeding array size
+      }
     
-    void AddHit(G4ThreeVector planePos,   G4double globalTime, 
-		G4ThreeVector initialPos, G4double wavelength)
-    {
-      if ( fNHits > kPMax )
-	{
-	  G4cout << " *** Error!: Hit array too small!  Fix me!" << G4endl;
-	  G4cout << " ***       : Keeping array sized at kPMax: " << kPMax << G4endl;
-	  fNHits = kPMax-1; // to prevent exceeding array size
-	}
-      fPlaneX[fNHits] = planePos.x()/cm;
-      fPlaneY[fNHits] = planePos.y()/cm;
-      fPlaneZ[fNHits] = planePos.z()/cm;
-      fPlaneT[fNHits] = globalTime/ns;
-      fTrackX[fNHits] = initialPos.x()/cm;
-      fTrackY[fNHits] = initialPos.y()/cm;
-      fTrackZ[fNHits] = initialPos.z()/cm;
-      fWavelength[fNHits] = wavelength;
-      fNHits++;
-    }
-    // Optical Photon Stuff //
-    int    *GetNHits()      { return &fNHits; }
-    int    *GetPhotonHits() { return &fNPhotons; }
-    double *GetPlaneX() { return fPlaneX; }
-    double *GetPlaneY() { return fPlaneY; }
-    double *GetPlaneZ() { return fPlaneZ; }
-    double *GetPlaneT() { return fPlaneT; }
-    double *GetTrackX() { return fTrackX; }
-    double *GetTrackY() { return fTrackY; }
-    double *GetTrackZ() { return fTrackZ; }
-    double *GetPrimaryPositionX() { return &fPrimePosX; }
-    double *GetPrimaryPositionY() { return &fPrimePosY; }
-    double *GetPrimaryPositionZ() { return &fPrimePosZ; }
-    double *GetPrimaryMomentumX() { return &fPrimeMomX; }
-    double *GetPrimaryMomentumY() { return &fPrimeMomY; }
-    double *GetPrimaryMomentumZ() { return &fPrimeMomZ; }
-    double *GetWavelength()       { return fWavelength; }
-    
-    // Lepton Stuff //
-    int    *GetlDefinition()       { return lDefinition;}
-    int    *Getindexnum()          { return &indexnum;  }
-    double *GetlPrimaryPositionX() { return lPrimePosX; }
-    double *GetlPrimaryPositionY() { return lPrimePosY; }
-    double *GetlPrimaryPositionZ() { return lPrimePosZ; }
-    double *GetlPrimaryMomentumX() { return lPrimeMomX; }
-    double *GetlPrimaryMomentumY() { return lPrimeMomY; }
-    double *GetlPrimaryMomentumZ() { return lPrimeMomZ; }
+    GPrimePosX[indexnum] = initialPos.x()/cm;
+    GPrimePosY[indexnum] = initialPos.y()/cm;
+    GPrimePosZ[indexnum] = initialPos.z()/cm;
+  }
 
-  private:
-    WaterCherenkovRunAction * theRun;
-    
-    // Optical Photon Stuff //
-    G4int  fNPhotons;
-    G4int  fNHits;
-    double fPlaneX[kPMax];
-    double fPlaneY[kPMax];
-    double fPlaneZ[kPMax];
-    double fPlaneT[kPMax];
-    double fTrackX[kPMax];
-    double fTrackY[kPMax];
-    double fTrackZ[kPMax];
-    double fPrimePosX;
-    double fPrimePosY;
-    double fPrimePosZ;
-    double fPrimeMomX;
-    double fPrimeMomY;
-    double fPrimeMomZ;
-    double fWavelength[kPMax];
+  void AddHit(G4ThreeVector planePos,   G4double globalTime, 
+	      G4ThreeVector initialPos, G4double wavelength)
+  {
+    if ( fNHits > kPMax )
+      {
+	G4cout << " *** Error!: Hit array too small!  Fix me!" << G4endl;
+	G4cout << " ***       : Keeping array sized at kPMax: " << kPMax << G4endl;
+	fNHits = kPMax-1; // to prevent exceeding array size
+      }
+    fPlaneX[fNHits] = planePos.x()/cm;
+    fPlaneY[fNHits] = planePos.y()/cm;
+    fPlaneZ[fNHits] = planePos.z()/cm;
+    fPlaneT[fNHits] = globalTime/ns;
+    fTrackX[fNHits] = initialPos.x()/cm;
+    fTrackY[fNHits] = initialPos.y()/cm;
+    fTrackZ[fNHits] = initialPos.z()/cm;
+    fWavelength[fNHits] = wavelength;
+    fNHits++;
+  }
+  // Optical Photon Stuff //
+  int    *GetNHits()      { return &fNHits; }
+  int    *GetPhotonHits() { return &fNPhotons; }
+  double *GetPlaneX() { return fPlaneX; }
+  double *GetPlaneY() { return fPlaneY; }
+  double *GetPlaneZ() { return fPlaneZ; }
+  double *GetPlaneT() { return fPlaneT; }
+  double *GetTrackX() { return fTrackX; }
+  double *GetTrackY() { return fTrackY; }
+  double *GetTrackZ() { return fTrackZ; }
+  double *GetPrimaryPositionX() { return &fPrimePosX; }
+  double *GetPrimaryPositionY() { return &fPrimePosY; }
+  double *GetPrimaryPositionZ() { return &fPrimePosZ; }
+  double *GetPrimaryMomentumX() { return &fPrimeMomX; }
+  double *GetPrimaryMomentumY() { return &fPrimeMomY; }
+  double *GetPrimaryMomentumZ() { return &fPrimeMomZ; }
+  double *GetWavelength()       { return fWavelength; }
+  double *GetGPrimaryPositionX() { return GPrimePosX;   }
+  double *GetGPrimaryPositionY() { return GPrimePosY;   }
+  double *GetGPrimaryPositionZ() { return GPrimePosZ;   }  
 
-    // Lepton Stuff //
-    G4int  lDefinition[kPMax];
-    G4int  indexnum;
-    double lPrimePosX[kPMax];
-    double lPrimePosY[kPMax];
-    double lPrimePosZ[kPMax];
-    double lPrimeMomX[kPMax];
-    double lPrimeMomY[kPMax];
-    double lPrimeMomZ[kPMax];
+  // Lepton Stuff //
+  int    *GetlDefinition()       { return lDefinition;  }
+  int    *Getindexnum()          { return &indexnum;    }
+  double *GetlPrimaryPositionX() { return lPrimePosX;   }
+  double *GetlPrimaryPositionY() { return lPrimePosY;   }
+  double *GetlPrimaryPositionZ() { return lPrimePosZ;   }
+  double *GetlPrimaryMomentumX() { return lPrimeMomX;   }
+  double *GetlPrimaryMomentumY() { return lPrimeMomY;   }
+  double *GetlPrimaryMomentumZ() { return lPrimeMomZ;   }
+  
+  // Process Stuff //
+  int    *GetlProcessType()      { return lProcessType; }
+  
+private:
+  WaterCherenkovRunAction * theRun;
+  
+  // Optical Photon Stuff //
+  G4int  fNPhotons;
+  G4int  fNHits;
+  double fPlaneX[kPMax];
+  double fPlaneY[kPMax];
+  double fPlaneZ[kPMax];
+  double fPlaneT[kPMax];
+  double fTrackX[kPMax];
+  double fTrackY[kPMax];
+  double fTrackZ[kPMax];
+  double fPrimePosX;
+  double fPrimePosY;
+  double fPrimePosZ;
+  double fPrimeMomX;
+  double fPrimeMomY;
+  double fPrimeMomZ;
+  double fWavelength[kPMax];
+  double GPrimePosX[kPMax];
+  double GPrimePosY[kPMax];
+  double GPrimePosZ[kPMax];
+  
+  // Lepton Stuff //
+  G4int  lDefinition[kPMax];
+  G4int  indexnum;
+  double lPrimePosX[kPMax];
+  double lPrimePosY[kPMax];
+  double lPrimePosZ[kPMax];
+  double lPrimeMomX[kPMax];
+  double lPrimeMomY[kPMax];
+  double lPrimeMomZ[kPMax];
+
+  // Process Stuff //
+  G4int  lProcessType[kPMax];
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

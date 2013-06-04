@@ -49,10 +49,14 @@ class WaterCherenkovPrimaryGeneratorAction : public G4VUserPrimaryGeneratorActio
    ~WaterCherenkovPrimaryGeneratorAction();
 
   public:
-    void GeneratePrimaries(G4Event*);
-
-    void SetOptPhotonPolar();
-    void SetOptPhotonPolar(G4double);
+  void GeneratePrimaries(G4Event*);
+  
+  void SetOptPhotonPolar();
+  void SetOptPhotonPolar(G4double);
+  //G4ParticleGun GetParticleDefinition() {
+  //  return G4Gun;
+  //}
+		       
 
   private:
     G4ParticleGun* particleGun;

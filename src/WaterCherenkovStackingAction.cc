@@ -40,7 +40,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 WaterCherenkovStackingAction::WaterCherenkovStackingAction()
-: gammaCounter(0)
+  : gammaCounter(0)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -54,37 +54,40 @@ G4ClassificationOfNewTrack
 WaterCherenkovStackingAction::ClassifyNewTrack(const G4Track * aTrack)
 {
   if(aTrack->GetCurrentStepNumber() == 0)
-  {
-  	WaterCherenkovEventAction *theEvent =
+    {
+      WaterCherenkovEventAction *theEvent =
   	(WaterCherenkovEventAction*)G4RunManager::GetRunManager()->GetUserEventAction();
-  
-  	if(aTrack->GetDefinition() == G4OpticalPhoton::OpticalPhotonDefinition()) 
-  	{
-    	   theEvent -> AddPhoton();
-    	   if(aTrack->GetParentID()>0)
-    	   { // particle is secondary
-      	     gammaCounter++;
-    	   }
+      
+      if(aTrack->GetDefinition() == G4OpticalPhoton::OpticalPhotonDefinition()) 
+	{
+	  G4ThreeVector PositionVector = aTrack -> GetPosition();
+	  
+       	  theEvent -> PhotonPos(PositionVector);
+	  theEvent -> AddPhoton();
+	  if(aTrack->GetParentID()>0)
+	    { // particle is secondary
+	      gammaCounter++;
+	    }
   	}
-
-  	else if((aTrack->GetDefinition()==G4Electron::ElectronDefinition())   ||
-                (aTrack->GetDefinition()==G4Positron::PositronDefinition())   ||
-                (aTrack->GetDefinition()==G4MuonPlus::MuonPlusDefinition())   ||
-                (aTrack->GetDefinition()==G4MuonMinus::MuonMinusDefinition())   ) 
+      
+      else if((aTrack->GetDefinition()==G4Electron::ElectronDefinition())   ||
+	      (aTrack->GetDefinition()==G4Positron::PositronDefinition())   ||
+	      (aTrack->GetDefinition()==G4MuonPlus::MuonPlusDefinition())   ||
+	      (aTrack->GetDefinition()==G4MuonMinus::MuonMinusDefinition())   ) 
   	{ 
-    		G4ThreeVector PositionVector = aTrack -> GetPosition();
-    		G4ThreeVector MomentumVector = aTrack -> GetMomentum();
-    		G4int definition = 0;
-
-    		if(aTrack->GetDefinition()==G4Electron::ElectronDefinition())       {definition =  11;}
-        	else if(aTrack->GetDefinition()==G4Positron::PositronDefinition())  {definition = -11;}
-        	else if(aTrack->GetDefinition()==G4MuonPlus::MuonPlusDefinition())  {definition =  13;}
-                else if(aTrack->GetDefinition()==G4MuonMinus::MuonMinusDefinition()){definition = -13;}
-    
-        	theEvent -> AddLepton(PositionVector, MomentumVector, definition);
+	  G4ThreeVector PositionVector = aTrack -> GetPosition();
+	  G4ThreeVector MomentumVector = aTrack -> GetMomentum();
+	  G4int definition = 0;
+	  
+	  if(aTrack->GetDefinition()==G4Electron::ElectronDefinition())       {definition =  11;}
+	  else if(aTrack->GetDefinition()==G4Positron::PositronDefinition())  {definition = -11;}
+	  else if(aTrack->GetDefinition()==G4MuonPlus::MuonPlusDefinition())  {definition =  13;}
+	  else if(aTrack->GetDefinition()==G4MuonMinus::MuonMinusDefinition()){definition = -13;}
+	  
+	  theEvent -> AddLepton(PositionVector, MomentumVector, definition);
   	}
-
-  }
+      
+    }
   return fUrgent;
 }
 
