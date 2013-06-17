@@ -78,8 +78,8 @@ WaterCherenkovStackingAction::ClassifyNewTrack(const G4Track * aTrack)
 	  
 	  if(aTrack->GetDefinition()==G4Electron::ElectronDefinition())       {definition =  11;}
 	  else if(aTrack->GetDefinition()==G4Positron::PositronDefinition())  {definition = -11;}
-	  else if(aTrack->GetDefinition()==G4MuonPlus::MuonPlusDefinition())  {definition =  13;}
-	  else if(aTrack->GetDefinition()==G4MuonMinus::MuonMinusDefinition()){definition = -13;}
+	  else if(aTrack->GetDefinition()==G4MuonPlus::MuonPlusDefinition())  {definition = -13;}
+	  else if(aTrack->GetDefinition()==G4MuonMinus::MuonMinusDefinition()){definition =  13;}
 	  
 	  theEvent -> AddLepton(PositionVector, MomentumVector, definition);
   	}

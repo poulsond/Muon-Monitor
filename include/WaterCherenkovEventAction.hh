@@ -77,7 +77,8 @@ public:
     leptonNum++;
   }
   
-  void AddProcess(G4int interaction, G4ThreeVector eventPos, G4int PDG)
+  void AddProcess(G4int interaction, G4ThreeVector eventPos,
+		  G4int PDG, G4double interactionTime)
   {
     if ( interactionNum > kPMax )
       {
@@ -85,12 +86,13 @@ public:
 	G4cout << " ***       : Keeping array sized at kPMax: " << kPMax << G4endl;
 	interactionNum = kPMax-1; // to prevent exceeding array size
       }
-    
+   
     lProcessType[interactionNum] = interaction;
     GPrimePosX_cm[interactionNum] = eventPos.x()/cm;
     GPrimePosY_cm[interactionNum] = eventPos.y()/cm;
     GPrimePosZ_cm[interactionNum] = eventPos.z()/cm;
     pDefinition[interactionNum] = PDG;
+    linteractionTime_ns[interactionNum] = interactionTime/ns;
     interactionNum++;
   }
   
@@ -149,7 +151,8 @@ public:
   
   // Process Stuff //
   int    *GetlProcessType()      { return lProcessType; }
-  
+  double *GetinteractionTime()   { return linteractionTime_ns; }
+
 private:
   WaterCherenkovRunAction * theRun;
   
@@ -188,6 +191,7 @@ private:
   
   // Process Stuff //
   G4int  lProcessType[kPMax];
+  double linteractionTime_ns[kPMax];
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

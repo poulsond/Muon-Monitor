@@ -77,6 +77,8 @@ int main(int argc,char** argv)
 
   // Set random seed with system time
   //
+  //G4long myseed = 345354;
+  //CLHEP::HepRandom::setTheSeed(myseed);
   G4long seed = time(NULL);
   CLHEP::HepRandom::setTheSeed(seed);
   

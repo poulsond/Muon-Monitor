@@ -64,24 +64,24 @@ void WaterCherenkovPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   G4Gun->SetParticleMomentumDirection(G4ThreeVector(1,0,0));
  
   //should be in cyclindrical coordinates
-  G4double MinRadius = (9.91)*cm; //can is 10.15cm
+  G4double MinRadius = (5)*cm; //can is 10.15cm
   G4double MaxRadius = (25.4)*cm; //graphite goes to 25.4cm
-  G4double X = (G4UniformRand()-0.5)*2*MaxRadius;
-  //G4double X = -35*cm;
-  G4double Y = (G4UniformRand()-0.5)*2*MaxRadius;
-  G4double Z = (G4UniformRand()-0.5)*2*MaxRadius;
+  //G4double X = (G4UniformRand()-0.5)*2*MaxRadius;
+  G4double X = 0*cm;//-35*cm;
+  G4double Y = 0*cm;//(G4UniformRand()-0.5)*2*MaxRadius;
+  G4double Z = 0*cm;//(G4UniformRand()-0.5)*2*MaxRadius;
 
-  while(sqrt(X*X+Y*Y)>MinRadius || fabs(Z)>MinRadius){
+  /*while(sqrt(X*X+Y*Y)>MinRadius || fabs(Z)>MinRadius){
     X = (G4UniformRand()-0.5)*2*MaxRadius;
     Y = (G4UniformRand()-0.5)*2*MaxRadius;
     Z = (G4UniformRand()-0.5)*2*MaxRadius;
-  }
+    }*/
   
-  /*while(fabs(Z)>MaxRadius || fabs(Y)>MaxRadius){
+  while(fabs(Z)>MaxRadius || fabs(Y)>MaxRadius){
     X = -35*cm;
     Y = (G4UniformRand()-0.5)*2*MaxRadius;
     Z = (G4UniformRand()-0.5)*2*MaxRadius;
-    }*/
+  }
 
   G4Gun->SetParticlePosition(G4ThreeVector(X, Y, Z));
   G4Gun->GeneratePrimaryVertex(anEvent);

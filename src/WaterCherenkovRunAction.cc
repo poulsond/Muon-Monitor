@@ -83,7 +83,7 @@ void WaterCherenkovRunAction::BeginOfRunAction(const G4Run* aRun)
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void WaterCherenkovRunAction::EndOfRunAction(const G4Run* aRun)
-{   
+{
   G4cout << "ending run" << G4endl;
   timer->Stop();
   G4cout << "number of event = " << aRun->GetNumberOfEvent() 
@@ -106,9 +106,9 @@ void WaterCherenkovRunAction::InitializeTree()
   (WaterCherenkovEventAction*)G4RunManager::GetRunManager()->GetUserEventAction();
 
   TTree *tempTree = new TTree("fTree", "");
+  tempTree->Branch("interactionNum",theEvent->GetinteractionNum(),   "interactionNum/I");
   tempTree->Branch("fNHits",        theEvent->GetNHits(),            "fNHits/I");
   tempTree->Branch("leptonNum",     theEvent->GetleptonNum(),        "leptonNum/I");
-  tempTree->Branch("interactionNum",theEvent->GetleptonNum(),        "interactionNum/I");
   tempTree->Branch("fNPhotons",     theEvent->GetPhotonHits(),       "fNPhotons/I");
   tempTree->Branch("fPlaneX_cm",    theEvent->GetPlaneX(),           "fPlaneX_cm[fNHits]/D");
   tempTree->Branch("fPlaneY_cm",    theEvent->GetPlaneY(),           "fPlaneY_cm[fNHits]/D");
@@ -135,7 +135,8 @@ void WaterCherenkovRunAction::InitializeTree()
   tempTree->Branch("GPrimePosX_cm", theEvent->GetGPrimaryPositionX(),"GPrimePosX_cm[interactionNum]/D");
   tempTree->Branch("GPrimePosY_cm", theEvent->GetGPrimaryPositionY(),"GPrimePosY_cm[interactionNum]/D");
   tempTree->Branch("GPrimePosZ_cm", theEvent->GetGPrimaryPositionZ(),"GPrimePosZ_cm[interactionNum]/D"); 
-  tempTree->Branch("pDefinition",   theEvent->GetpDefinition(),      "pDefinition[interactionNum]/I"); 
+  tempTree->Branch("pDefinition",   theEvent->GetpDefinition(),      "pDefinition[interactionNum]/I");
+  tempTree->Branch("linteractionTime_ns",    theEvent->GetinteractionTime(), "linteractionTime_ns[interactionNum]/D"); 
 
   fTree = tempTree;
 
@@ -144,13 +145,9 @@ void WaterCherenkovRunAction::InitializeTree()
   G4double AbsConstant = 0;
   memoTree->Branch("AbsConstant", &AbsConstant, "AbsConstant/D");
 
-  // reflectivity
+  // reflectivity  
   G4double Reflectivity = 0;
   memoTree->Branch("Reflectivity", &Reflectivity,  "Reflectivity/D");
-
-  // particle
-  //G4string ParticleName = 0;
-  //  memoTree->Branch("ParticleName", &ParticleName, "ParticleName/D");
 
   // mTree
   mTree = memoTree;
@@ -164,5 +161,4 @@ void WaterCherenkovRunAction::InitializeTree()
   Reflectivity = Detector->GetReflectivity();
   AbsConstant = Detector->GetAbsConstant();
   mTree->Fill();
-
 }

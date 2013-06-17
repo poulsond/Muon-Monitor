@@ -81,6 +81,7 @@ void WaterCherenkovEventAction::ResetArrays()
 {
   for(G4int i = 0; i<kPMax; i++)
   {
+    // Photon Stuff
     fPlaneX_cm[i] = 0;
     fPlaneY_cm[i] = 0;
     fPlaneZ_cm[i] = 0;
@@ -89,6 +90,7 @@ void WaterCherenkovEventAction::ResetArrays()
     fTrackY_cm[i] = 0;
     fTrackZ_cm[i] = 0;
     fWavelength_nm[i] = 0;
+    // Lepton Stuff
     lDefinition[i] = 0;
     lPrimePosX_cm[i] = 0;
     lPrimePosY_cm[i] = 0;
@@ -96,6 +98,13 @@ void WaterCherenkovEventAction::ResetArrays()
     lPrimeMomX[i] = 0;
     lPrimeMomY[i] = 0;
     lPrimeMomZ[i] = 0;
+    // Process Stuff
+    pDefinition[i] = 0;
+    lProcessType[i] = 0;
+    GPrimePosX_cm[i] = 0;
+    GPrimePosY_cm[i] = 0;
+    GPrimePosZ_cm[i] = 0;
+    linteractionTime_ns[i] = 0;
   }
 }
 
@@ -110,4 +119,3 @@ void WaterCherenkovEventAction::EndOfEventAction(const G4Event*)
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-

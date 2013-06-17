@@ -287,7 +287,7 @@ n                                        absorptionIndexAl,numEntriesAl);
 				    0*deg,360*deg);
 
    G4LogicalVolume* WaterCan_log = 
-    new G4LogicalVolume(WaterCan,Water,"WaterCan_log",0,0,0);
+     new G4LogicalVolume(WaterCan,Water,"WaterCan_log",0,0,0);
 
    G4VPhysicalVolume* WaterCan_phys =
     new G4PVPlacement(0,G4ThreeVector(0,0,0),WaterCan_log,"WaterCan_phys",

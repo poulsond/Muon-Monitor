@@ -155,6 +155,7 @@ void SFBosonPhysics::ConstructProcess()
 #include "G4hIonisation.hh"
 #include "G4ElectronNuclearProcess.hh"
 #include "G4PositronNuclearProcess.hh"
+#include "G4Decay.hh"
 
 // models
 #include "G4ElectroNuclearReaction.hh"
@@ -241,6 +242,7 @@ void SFLeptonPhysics::ConstructProcess()
   pManager->AddProcess(new G4MuIonisation(),          -1, 2, 2);
   pManager->AddProcess(new G4MuBremsstrahlung(),      -1, 3, 3);  
   pManager->AddProcess(new G4MuPairProduction(),      -1, 4, 4);
+  //pManager->AddProcess(new G4Decay(),                  2,-1,-1);
   pManager->AddProcess(new G4MuonMinusCaptureAtRest(), 0,-1,-1);
   
   // Muon+
@@ -250,6 +252,7 @@ void SFLeptonPhysics::ConstructProcess()
   pManager->AddProcess(new G4MuIonisation(),       -1, 2, 2);
   pManager->AddProcess(new G4MuBremsstrahlung(),   -1, 3, 3);  
   pManager->AddProcess(new G4MuPairProduction(),   -1, 4, 4);
+  //pManager->AddProcess(new G4Decay(),               0,-1,-1);
 
   // Tau-
 
@@ -1271,11 +1274,14 @@ void SFDecayPhysics::ConstructProcess()
   while( (*theParticleIterator)() ){
     G4ParticleDefinition* particle = theParticleIterator->value();
     G4ProcessManager* pmanager = particle->GetProcessManager();
+    // Addition for mu-   
+    if(particle->GetPDGEncoding() == 13) particle->SetPDGStable(false);
+    // Normal
     if (fDecayProcess.IsApplicable(*particle)) { 
       pmanager ->AddProcess(&fDecayProcess);
       // set ordering for PostStepDoIt and AtRestDoIt
-      pmanager ->SetProcessOrdering(&fDecayProcess, idxPostStep);
-      pmanager ->SetProcessOrdering(&fDecayProcess, idxAtRest);
+      pmanager ->SetProcessOrderingToFirst(&fDecayProcess, idxPostStep);
+      pmanager ->SetProcessOrderingToFirst(&fDecayProcess, idxAtRest);
     }
   }
 }
