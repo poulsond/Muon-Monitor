@@ -262,7 +262,9 @@ n                                        absorptionIndexAl,numEntriesAl);
   
 // The Carbon Cylindrical Tube
   G4Tubs* CarbonCan = new G4Tubs("CarbonCan",0,25.4*cm,25.4*cm,
-				    0*deg,360*deg);
+				 0*deg,360*deg);
+  //  G4Box* CarbonCan = new G4Box("CarbonCan",
+  //		       25.4*cm,25.4*cm,25.4*cm);  
 
   G4LogicalVolume* CarbonCan_log = 
     new G4LogicalVolume(CarbonCan,Carbon,"CarbonCan_log",0,0,0);
@@ -272,8 +274,12 @@ n                                        absorptionIndexAl,numEntriesAl);
 		      GasTank_log,false,0);
 
 // The Can of Aluminum
-   G4Tubs* AlCan = new G4Tubs("AlCan",0,10.16*cm+0.25*cm,10.16*cm+0.25*cm,
-				    0*deg,360*deg);
+  //G4Tubs* AlCan = new G4Tubs("AlCan",0,10.16*cm+0.25*cm,10.16*cm+0.25*cm,
+  //		     0*deg,360*deg);
+  //  G4Box* AlCan = new G4Box("AlCan",
+  //		   10.16*cm+.25*cm,10.16*cm+.25*cm,10.16*cm+.25*cm);
+  G4Tubs* AlCan = new G4Tubs("AlCan",0,15.16*cm+0.25*cm,15.16*cm+0.25*cm,
+			     0*deg,360*deg);  
 
    G4LogicalVolume* AlCan_log = 
     new G4LogicalVolume(AlCan,Aluminum,"AlCan_log",0,0,0);
@@ -283,8 +289,12 @@ n                                        absorptionIndexAl,numEntriesAl);
 		      CarbonCan_log,false,0);
 
 // The Can of Water
-   G4Tubs* WaterCan = new G4Tubs("WaterCan",0*cm,10.16*cm-0.25*cm,10.16*cm-0.25*cm,
-				    0*deg,360*deg);
+   //G4Tubs* WaterCan = new G4Tubs("WaterCan",0*cm,10.16*cm-0.25*cm,10.16*cm-0.25*cm,
+   //			 0*deg,360*deg);
+   //   G4Box* WaterCan = new G4Box("WaterCan",
+   //		       10.16*cm-0.25*cm,10.16*cm-0.25*cm,10.16*cm-0.25*cm);
+   G4Tubs* WaterCan = new G4Tubs("WaterCan",0*cm,15.16*cm-0.25*cm,15.16*cm-0.25*cm,
+				 0*deg,360*deg);
 
    G4LogicalVolume* WaterCan_log = 
      new G4LogicalVolume(WaterCan,Water,"WaterCan_log",0,0,0);
@@ -294,14 +304,14 @@ n                                        absorptionIndexAl,numEntriesAl);
 		      AlCan_log,false,0);
 
 // The Can of Silicon
-   G4Tubs* GlassCan = new G4Tubs("GlassCan",0*cm,2.54*cm,7.6075*cm,
+   G4Tubs* GlassCan = new G4Tubs("GlassCan",0*cm,2.54*cm,/*7.6075*cm*/5.1075*cm,
 				    0*deg,360*deg);
 
    G4LogicalVolume* GlassCan_log = 
     new G4LogicalVolume(GlassCan,Silicon,"GlassCan_log",0,0,0);
 
 // The Can of Vacuum
-   G4Tubs* VCan = new G4Tubs("VCan",0*cm,2.2225*cm,7.29*cm,0*deg,360*deg);
+   G4Tubs* VCan = new G4Tubs("VCan",0*cm,2.2225*cm,/*7.29*cm*/4.79*cm,0*deg,360*deg);
    G4LogicalVolume* VCan_log = new G4LogicalVolume(VCan,Vacuum,"VCan_log",0,0,0);
 
 // The Glass Disks
@@ -316,57 +326,57 @@ n                                        absorptionIndexAl,numEntriesAl);
    G4VPhysicalVolume* GlassCan_phys;
    G4VPhysicalVolume* VCan_phys;
    G4VPhysicalVolume* SDisk_phys;
-
+   
    for(G4int i = 0; i < 4; i++)
      {
        G4int angle = 90*i;
-
-        GlassCan_phys = new G4PVPlacement(0,
-					  G4ThreeVector(cos(angle*deg)*6*cm,
-					  sin(angle*deg)*6*cm,
-					  17.7925*cm-0.249*cm),
-					  GlassCan_log,"GlassCan_phys",
-					  CarbonCan_log,false, i);
-
-	VCan_phys = new G4PVPlacement(0,
-				       G4ThreeVector(cos(angle*deg)*6*cm,
-				       sin(angle*deg)*6*cm,
-				       17.7925*cm-0.3175*cm-0.249*cm),
-				       VCan_log, "VCan_Phys",
-				       CarbonCan_log, false, i);
        
-	 SDisk_phys = new G4PVPlacement(0,
-					G4ThreeVector(cos(angle*deg)*6*cm,
-					sin(angle*deg)*6*cm,
-					10.16*cm-0.25*cm-0.18*cm),
-					SDisk_log, "SDisk_phys",
-					WaterCan_log, false, i);
+       GlassCan_phys = new G4PVPlacement(0,
+			  G4ThreeVector(cos(angle*deg)*6*cm,
+			  sin(angle*deg)*6*cm,
+		/*change*/20.2925*cm-0.249*cm),
+			  GlassCan_log,"GlassCan_phys",
+			  CarbonCan_log,false, i);
+       
+       VCan_phys = new G4PVPlacement(0,
+			  G4ThreeVector(cos(angle*deg)*6*cm,
+			  sin(angle*deg)*6*cm,
+			  20.2925*cm-0.3175*cm-0.249*cm),
+			  VCan_log, "VCan_Phys",
+			  CarbonCan_log, false, i);
+       
+       SDisk_phys = new G4PVPlacement(0,
+			  G4ThreeVector(cos(angle*deg)*6*cm,
+			  sin(angle*deg)*6*cm,
+			  15.16*cm-0.25*cm-0.18*cm),
+			  SDisk_log, "SDisk_phys",
+			  WaterCan_log, false, i);
        
        fDetectorPhysical = new G4PVPlacement(0,
-					     G4ThreeVector(cos(angle*deg)*6*cm,
-					     sin(angle*deg)*6*cm,
-					     10.16*cm-0.25*cm-0.01*cm),
-					     fDetectorLogical, "PhotonDetector",
-					     WaterCan_log, false, i);
+			  G4ThreeVector(cos(angle*deg)*6*cm,
+			  sin(angle*deg)*6*cm,
+			  15.16*cm-0.25*cm-0.01*cm),
+			  fDetectorLogical, "PhotonDetector",
+			  WaterCan_log, false, i);
      }
+   
+   //	------------- Surfaces --------------     //
+   
+   // Aluminum Surface 
+   G4OpticalSurface* OpAlSurface = new G4OpticalSurface("OpAlSurface");
+   OpAlSurface->SetType(dielectric_metal);
+   OpAlSurface->SetFinish(polished);
+   OpAlSurface->SetModel(glisur);
+   //OpAlSurface->SetModel(unified);
+   
+   
+   G4LogicalBorderSurface* AluminumSurface = new G4LogicalBorderSurface(
+		  "AluminumSurface",WaterCan_phys,AlCan_phys,OpAlSurface);
 
-//	------------- Surfaces --------------     //
-
-// Aluminum Surface 
-  G4OpticalSurface* OpAlSurface = new G4OpticalSurface("OpAlSurface");
-  OpAlSurface->SetType(dielectric_metal);
-  OpAlSurface->SetFinish(polished);
-  OpAlSurface->SetModel(glisur);
-  //OpAlSurface->SetModel(unified);
-
-
-  G4LogicalBorderSurface* AluminumSurface = new G4LogicalBorderSurface(
-		 "AluminumSurface",WaterCan_phys,AlCan_phys,OpAlSurface);
-
-  G4MaterialPropertiesTable* myMPT3 = new G4MaterialPropertiesTable();
-
-  G4double backscatter[nEntries];// = {0.1,0.1,0.1};
-  //  G4double backscatter[nEntries] = {0.1, 0.1};
+   G4MaterialPropertiesTable* myMPT3 = new G4MaterialPropertiesTable();
+   
+   G4double backscatter[nEntries];// = {0.1,0.1,0.1};
+   //  G4double backscatter[nEntries] = {0.1, 0.1};
   G4double reflectivity[nEntries];// = {fReflectivity,fReflectivity,fReflectivity}; //should not be zero!
   //  G4double reflectivity[nEntries] = {fReflectivity, fReflectivity};
   G4double efficiency[nEntries];// = {0.5,0.7,0.9};
