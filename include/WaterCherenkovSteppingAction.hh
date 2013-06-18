@@ -21,6 +21,8 @@ class WaterCherenkovSteppingAction:public G4UserSteppingAction{
     G4LogicalVolume *fPreVolume;
     G4LogicalVolume *fPostVolume;
     G4LogicalVolume *fDetectorVolume;
+    G4LogicalVolume *fAluminumVolume;
+    G4LogicalVolume *fWaterVolume;
     G4int fParticleID;
 
 

@@ -31,6 +31,14 @@ void WaterCherenkovSteppingAction::UserSteppingAction(const G4Step *theStep)
     ((WaterCherenkovDetectorConstruction*)G4RunManager::GetRunManager()
      ->GetUserDetectorConstruction())->GetDetectorLogicalVolume();
   
+  fAluminumVolume = 
+    ((WaterCherenkovDetectorConstruction*)G4RunManager::GetRunManager()
+     ->GetUserDetectorConstruction())->GetAluminumLogicalVolume();
+  
+  fWaterVolume =
+    ((WaterCherenkovDetectorConstruction*)G4RunManager::GetRunManager()
+     ->GetUserDetectorConstruction())->GetWaterLogicalVolume();
+
   WaterCherenkovEventAction *theEvent =
     (WaterCherenkovEventAction*)G4RunManager::GetRunManager()->GetUserEventAction();
   
@@ -99,5 +107,17 @@ void WaterCherenkovSteppingAction::UserSteppingAction(const G4Step *theStep)
 	      theStep->GetTrack()->SetTrackStatus(fKillTrackAndSecondaries);
 	    }
 	}
+    }
+
+  // Attempt to make a veto
+  if(fPostVolume == fAluminumVolume && fPostVolume != fWaterVolume)
+    {
+      if(theStep->GetTrack()->GetDefinition() == G4Electron::ElectronDefinition() || theStep->GetTrack()->GetDefinition() == G4Positron::PositronDefinition()){
+	if(theStep->GetTrack()->GetVelocity() >= 0.75)
+	  {
+	    int veto = 1;
+	    theEvent->AddVeto(veto);
+	  }
+      }
     }
 }

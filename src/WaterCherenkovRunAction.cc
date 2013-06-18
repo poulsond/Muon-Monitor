@@ -137,6 +137,8 @@ void WaterCherenkovRunAction::InitializeTree()
   tempTree->Branch("GPrimePosZ_cm", theEvent->GetGPrimaryPositionZ(),"GPrimePosZ_cm[interactionNum]/D"); 
   tempTree->Branch("pDefinition",   theEvent->GetpDefinition(),      "pDefinition[interactionNum]/I");
   tempTree->Branch("linteractionTime_ns",    theEvent->GetinteractionTime(), "linteractionTime_ns[interactionNum]/D"); 
+  tempTree->Branch("vetoNum",       theEvent->GetVetoNum(),          "vetoNum/I"); 
+  tempTree->Branch("OhNoVeto",      theEvent->GetOhNoVeto(),         "OhNoVeto[vetoNum]/I"); 
 
   fTree = tempTree;
 

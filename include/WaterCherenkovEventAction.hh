@@ -76,7 +76,21 @@ public:
     lPrimeMomZ[leptonNum] = initialMom.z()/keV;
     leptonNum++;
   }
+
+  void AddVeto(G4int veto)
+  {
+    if ( vetoNum > kPMax )
+      {
+	G4cout << " *** Error!: Hit array too small!  Fix me!" << G4endl;
+	G4cout << " ***       : Keeping array sized at kPMax: " << kPMax << G4endl;
+	interactionNum = kPMax-1; // to prevent exceeding array size
+      }
+    
+    OhNoVeto[vetoNum] = veto;
+    vetoNum++;
+  }
   
+
   void AddProcess(G4int interaction, G4ThreeVector eventPos,
 		  G4int PDG, G4double interactionTime)
   {
@@ -153,6 +167,10 @@ public:
   int    *GetlProcessType()      { return lProcessType; }
   double *GetinteractionTime()   { return linteractionTime_ns; }
 
+  // Veto Stuffs //
+  int    *GetVetoNum() { return &vetoNum; }
+  int    *GetOhNoVeto()    { return OhNoVeto; }
+
 private:
   WaterCherenkovRunAction * theRun;
   
@@ -192,6 +210,10 @@ private:
   // Process Stuff //
   G4int  lProcessType[kPMax];
   double linteractionTime_ns[kPMax];
+
+  // Veto Stuff //
+  G4int  vetoNum;
+  G4int  OhNoVeto[kPMax];
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

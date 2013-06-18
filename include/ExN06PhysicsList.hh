@@ -24,81 +24,65 @@
 // ********************************************************************
 //
 //
-// $Id: WaterCherenkovDetectorConstruction.hh,v 1.5 2006/06/29 17:53:55 gunter Exp $
+// $Id: ExN06PhysicsList.hh,v 1.7 2006/06/29 17:53:59 gunter Exp $
 // GEANT4 tag $Name: geant4-09-02 $
 //
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#ifndef WaterCherenkovDetectorConstruction_h
-#define WaterCherenkovDetectorConstruction_h 1
+#ifndef ExN06PhysicsList_h
+#define ExN06PhysicsList_h 1
 
 #include "globals.hh"
-#include "G4VUserDetectorConstruction.hh"
-#include "G4LogicalVolume.hh"
+#include "G4VUserPhysicsList.hh"
 
+class G4Cerenkov;
+class G4Scintillation;
+class G4OpAbsorption;
+class G4OpRayleigh;
+class G4OpBoundaryProcess;
+class ExN06PhysicsListMessenger;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class WaterCherenkovDetectorMessenger;
-
-class WaterCherenkovDetectorConstruction : public G4VUserDetectorConstruction
+class ExN06PhysicsList : public G4VUserPhysicsList
 {
 public:
-  WaterCherenkovDetectorConstruction();
-  ~WaterCherenkovDetectorConstruction();
+  ExN06PhysicsList();
+  ~ExN06PhysicsList();
   
-  G4VPhysicalVolume* Construct();
+public:
+  void ConstructParticle();
+  void ConstructProcess();
   
-  G4LogicalVolume* GetDetectorLogicalVolume() { return fDetectorLogical; }
-  G4VPhysicalVolume* GetDetectorPhysicalVolume() { return fDetectorPhysical; }
-  G4LogicalVolume* GetAluminumLogicalVolume() { return AlCan_log; }
-  G4VPhysicalVolume* GetAluminumPhysicalVolume() { return AlCan_phys; }
-  G4LogicalVolume* GetWaterLogicalVolume() { return WaterCan_log; }
-  G4VPhysicalVolume* GetWaterPhysicalVolume() { return WaterCan_phys; }
+  void SetCuts();
   
-  void SetDetectorZPosition(G4double aVal) { fDetectorPlanePositionZ = aVal; }
-  void SetfReflectivity(G4double bVal = 0.9) { fReflectivity = bVal; }
-  void SetfAbsConstant(G4double cVal = 1) { fAbsConstant = cVal; }
-  G4double GetReflectivity() {
-    return fReflectivity;
-  }
-  G4double GetAbsConstant() {
-    return fAbsConstant;
-  }
-
-  private:
-    G4double fExpHallX;
-    G4double fExpHallY;
-    G4double fExpHallZ;
-
-    G4double fTankX;
-    G4double fTankY;
-    G4double fTankZ;
-
-    G4double fMirrorX;
-    G4double fMirrorY;
-    G4double fMirrorZ;
-
-    G4double fDetectorPlaneX;
-    G4double fDetectorPlaneY;
-    G4double fDetectorPlaneZ;
-
-    G4double fDetectorPlanePositionZ;
-
-    G4double fReflectivity;
-    G4double fAbsConstant;
-
-    WaterCherenkovDetectorMessenger *detectorMessenger;
-
-    G4LogicalVolume *fDetectorLogical;
-    G4VPhysicalVolume *fDetectorPhysical;
-    G4LogicalVolume *AlCan_log;
-    G4VPhysicalVolume *AlCan_phys;
-    G4LogicalVolume *WaterCan_log;
-    G4VPhysicalVolume *WaterCan_phys;
+  //these methods Construct particles
+  void ConstructBosons();
+  void ConstructLeptons();
+  void ConstructMesons();
+  void ConstructBaryons();
+  
+  //these methods Construct physics processes and register them
+  void ConstructGeneral();
+  void ConstructEM();
+  void ConstructOp();
+  
+  //for the Messenger 
+  void SetVerbose(G4int);
+  void SetNbOfPhotonsCerenkov(G4int);
+  
+private:
+  G4Cerenkov*          theCerenkovProcess;
+  G4Scintillation*     theScintillationProcess;
+  G4OpAbsorption*      theAbsorptionProcess;
+  G4OpRayleigh*        theRayleighScatteringProcess;
+  G4OpBoundaryProcess* theBoundaryProcess;
+  
+  ExN06PhysicsListMessenger* pMessenger;   
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#endif /*WaterCherenkovDetectorConstruction_h*/
+#endif /* ExN06PhysicsList_h */
+

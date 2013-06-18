@@ -274,88 +274,84 @@ n                                        absorptionIndexAl,numEntriesAl);
 		      GasTank_log,false,0);
 
 // The Can of Aluminum
-  //G4Tubs* AlCan = new G4Tubs("AlCan",0,10.16*cm+0.25*cm,10.16*cm+0.25*cm,
-  //		     0*deg,360*deg);
+  G4Tubs* AlCan = new G4Tubs("AlCan",0,10.16*cm+0.25*cm,10.16*cm+0.25*cm,
+			     0*deg,360*deg);
   //  G4Box* AlCan = new G4Box("AlCan",
   //		   10.16*cm+.25*cm,10.16*cm+.25*cm,10.16*cm+.25*cm);
-  G4Tubs* AlCan = new G4Tubs("AlCan",0,15.16*cm+0.25*cm,15.16*cm+0.25*cm,
-			     0*deg,360*deg);  
+  //G4Tubs* AlCan = new G4Tubs("AlCan",0,15.16*cm+0.25*cm,15.16*cm+0.25*cm,
+  //		     0*deg,360*deg);  
 
-   G4LogicalVolume* AlCan_log = 
-    new G4LogicalVolume(AlCan,Aluminum,"AlCan_log",0,0,0);
+  AlCan_log = new G4LogicalVolume(AlCan,Aluminum,"AlCan_log",0,0,0);
 
-   G4VPhysicalVolume* AlCan_phys =
-    new G4PVPlacement(0,G4ThreeVector(0,0,0),AlCan_log,"AlCan_phys",
-		      CarbonCan_log,false,0);
-
-// The Can of Water
-   //G4Tubs* WaterCan = new G4Tubs("WaterCan",0*cm,10.16*cm-0.25*cm,10.16*cm-0.25*cm,
-   //			 0*deg,360*deg);
-   //   G4Box* WaterCan = new G4Box("WaterCan",
-   //		       10.16*cm-0.25*cm,10.16*cm-0.25*cm,10.16*cm-0.25*cm);
-   G4Tubs* WaterCan = new G4Tubs("WaterCan",0*cm,15.16*cm-0.25*cm,15.16*cm-0.25*cm,
-				 0*deg,360*deg);
-
-   G4LogicalVolume* WaterCan_log = 
-     new G4LogicalVolume(WaterCan,Water,"WaterCan_log",0,0,0);
-
-   G4VPhysicalVolume* WaterCan_phys =
-    new G4PVPlacement(0,G4ThreeVector(0,0,0),WaterCan_log,"WaterCan_phys",
-		      AlCan_log,false,0);
-
-// The Can of Silicon
-   G4Tubs* GlassCan = new G4Tubs("GlassCan",0*cm,2.54*cm,/*7.6075*cm*/5.1075*cm,
-				    0*deg,360*deg);
-
-   G4LogicalVolume* GlassCan_log = 
-    new G4LogicalVolume(GlassCan,Silicon,"GlassCan_log",0,0,0);
-
-// The Can of Vacuum
-   G4Tubs* VCan = new G4Tubs("VCan",0*cm,2.2225*cm,/*7.29*cm*/4.79*cm,0*deg,360*deg);
-   G4LogicalVolume* VCan_log = new G4LogicalVolume(VCan,Vacuum,"VCan_log",0,0,0);
-
-// The Glass Disks
-   G4Tubs* SDisk = new G4Tubs("SDisk",0*cm, 2.54*cm, 0.15*cm, 0*deg, 360*deg);
-   G4LogicalVolume* SDisk_log = new G4LogicalVolume(SDisk,Glass,"SDisk_log",0,0,0);
-   
-// The Detectors
-   G4Tubs* detector = new G4Tubs("Detector",0*cm, 2.54*cm, 0.01*mm, 0*deg, 360*deg);
-   fDetectorLogical = new G4LogicalVolume(detector,Water,"DetectorLogical",0,0,0);
+  AlCan_phys = new G4PVPlacement(0,G4ThreeVector(0,0,0),AlCan_log,"AlCan_phys",
+				 CarbonCan_log,false,0);
   
-// The PMTs physical volumes
-   G4VPhysicalVolume* GlassCan_phys;
-   G4VPhysicalVolume* VCan_phys;
-   G4VPhysicalVolume* SDisk_phys;
-   
-   for(G4int i = 0; i < 4; i++)
-     {
-       G4int angle = 90*i;
-       
-       GlassCan_phys = new G4PVPlacement(0,
+  // The Can of Water
+  G4Tubs* WaterCan = new G4Tubs("WaterCan",0*cm,10.16*cm-0.25*cm,10.16*cm-0.25*cm,
+				0*deg,360*deg);
+  //   G4Box* WaterCan = new G4Box("WaterCan",
+  //		       10.16*cm-0.25*cm,10.16*cm-0.25*cm,10.16*cm-0.25*cm);
+  //G4Tubs* WaterCan = new G4Tubs("WaterCan",0*cm,15.16*cm-0.25*cm,15.16*cm-0.25*cm,
+  //			0*deg,360*deg);
+  
+  WaterCan_log = new G4LogicalVolume(WaterCan,Water,"WaterCan_log",0,0,0);
+  
+  WaterCan_phys = new G4PVPlacement(0,G4ThreeVector(0,0,0),WaterCan_log,"WaterCan_phys",
+				    AlCan_log,false,0);
+  
+  // The Can of Silicon
+  G4Tubs* GlassCan = new G4Tubs("GlassCan",0*cm,2.54*cm,7.6075*cm/*5.1075*cm*/
+				,0*deg,360*deg);
+  
+  G4LogicalVolume* GlassCan_log = 
+    new G4LogicalVolume(GlassCan,Silicon,"GlassCan_log",0,0,0);
+  
+  // The Can of Vacuum
+  G4Tubs* VCan = new G4Tubs("VCan",0*cm,2.2225*cm,7.29*cm/*4.79*cm*/,0*deg,360*deg);
+  G4LogicalVolume* VCan_log = new G4LogicalVolume(VCan,Vacuum,"VCan_log",0,0,0);
+  
+  // The Glass Disks
+  G4Tubs* SDisk = new G4Tubs("SDisk",0*cm, 2.54*cm, 0.15*cm, 0*deg, 360*deg);
+  G4LogicalVolume* SDisk_log = new G4LogicalVolume(SDisk,Glass,"SDisk_log",0,0,0);
+  
+  // The Detectors
+  G4Tubs* detector = new G4Tubs("Detector",0*cm, 2.54*cm, 0.01*mm, 0*deg, 360*deg);
+  fDetectorLogical = new G4LogicalVolume(detector,Water,"DetectorLogical",0,0,0);
+  
+  // The PMTs physical volumes
+  G4VPhysicalVolume* GlassCan_phys;
+  G4VPhysicalVolume* VCan_phys;
+  G4VPhysicalVolume* SDisk_phys;
+  
+  for(G4int i = 0; i < 4; i++)
+    {
+      G4int angle = 90*i;
+      
+      GlassCan_phys = new G4PVPlacement(0,
+                         G4ThreeVector(cos(angle*deg)*6*cm/*change*/,
+			 sin(angle*deg)*6*cm,
+               /*change*/17.7925*cm-0.249*cm),
+		         GlassCan_log,"GlassCan_phys",
+			 CarbonCan_log,false, i);
+      
+      VCan_phys = new G4PVPlacement(0,
 			  G4ThreeVector(cos(angle*deg)*6*cm,
 			  sin(angle*deg)*6*cm,
-		/*change*/20.2925*cm-0.249*cm),
-			  GlassCan_log,"GlassCan_phys",
-			  CarbonCan_log,false, i);
-       
-       VCan_phys = new G4PVPlacement(0,
-			  G4ThreeVector(cos(angle*deg)*6*cm,
-			  sin(angle*deg)*6*cm,
-			  20.2925*cm-0.3175*cm-0.249*cm),
+			  17.7925*cm-0.3175*cm-0.249*cm),
 			  VCan_log, "VCan_Phys",
 			  CarbonCan_log, false, i);
        
        SDisk_phys = new G4PVPlacement(0,
 			  G4ThreeVector(cos(angle*deg)*6*cm,
 			  sin(angle*deg)*6*cm,
-			  15.16*cm-0.25*cm-0.18*cm),
+			  10.16*cm-0.25*cm-0.18*cm),
 			  SDisk_log, "SDisk_phys",
 			  WaterCan_log, false, i);
        
        fDetectorPhysical = new G4PVPlacement(0,
 			  G4ThreeVector(cos(angle*deg)*6*cm,
 			  sin(angle*deg)*6*cm,
-			  15.16*cm-0.25*cm-0.01*cm),
+			  10.16*cm-0.25*cm-0.01*cm),
 			  fDetectorLogical, "PhotonDetector",
 			  WaterCan_log, false, i);
      }

@@ -24,81 +24,44 @@
 // ********************************************************************
 //
 //
-// $Id: WaterCherenkovDetectorConstruction.hh,v 1.5 2006/06/29 17:53:55 gunter Exp $
+// $Id: ExN06PhysicsListMessenger.hh,v 1.2 2006/06/29 17:54:02 gunter Exp $
 // GEANT4 tag $Name: geant4-09-02 $
 //
+// 
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#ifndef WaterCherenkovDetectorConstruction_h
-#define WaterCherenkovDetectorConstruction_h 1
+#ifndef ExN06PhysicsListMessenger_h
+#define ExN06PhysicsListMessenger_h 1
 
 #include "globals.hh"
-#include "G4VUserDetectorConstruction.hh"
-#include "G4LogicalVolume.hh"
+#include "G4UImessenger.hh"
 
+class ExN06PhysicsList;
+class G4UIdirectory;
+class G4UIcmdWithAnInteger;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class WaterCherenkovDetectorMessenger;
-
-class WaterCherenkovDetectorConstruction : public G4VUserDetectorConstruction
+class ExN06PhysicsListMessenger: public G4UImessenger
 {
-public:
-  WaterCherenkovDetectorConstruction();
-  ~WaterCherenkovDetectorConstruction();
-  
-  G4VPhysicalVolume* Construct();
-  
-  G4LogicalVolume* GetDetectorLogicalVolume() { return fDetectorLogical; }
-  G4VPhysicalVolume* GetDetectorPhysicalVolume() { return fDetectorPhysical; }
-  G4LogicalVolume* GetAluminumLogicalVolume() { return AlCan_log; }
-  G4VPhysicalVolume* GetAluminumPhysicalVolume() { return AlCan_phys; }
-  G4LogicalVolume* GetWaterLogicalVolume() { return WaterCan_log; }
-  G4VPhysicalVolume* GetWaterPhysicalVolume() { return WaterCan_phys; }
-  
-  void SetDetectorZPosition(G4double aVal) { fDetectorPlanePositionZ = aVal; }
-  void SetfReflectivity(G4double bVal = 0.9) { fReflectivity = bVal; }
-  void SetfAbsConstant(G4double cVal = 1) { fAbsConstant = cVal; }
-  G4double GetReflectivity() {
-    return fReflectivity;
-  }
-  G4double GetAbsConstant() {
-    return fAbsConstant;
-  }
-
-  private:
-    G4double fExpHallX;
-    G4double fExpHallY;
-    G4double fExpHallZ;
-
-    G4double fTankX;
-    G4double fTankY;
-    G4double fTankZ;
-
-    G4double fMirrorX;
-    G4double fMirrorY;
-    G4double fMirrorZ;
-
-    G4double fDetectorPlaneX;
-    G4double fDetectorPlaneY;
-    G4double fDetectorPlaneZ;
-
-    G4double fDetectorPlanePositionZ;
-
-    G4double fReflectivity;
-    G4double fAbsConstant;
-
-    WaterCherenkovDetectorMessenger *detectorMessenger;
-
-    G4LogicalVolume *fDetectorLogical;
-    G4VPhysicalVolume *fDetectorPhysical;
-    G4LogicalVolume *AlCan_log;
-    G4VPhysicalVolume *AlCan_phys;
-    G4LogicalVolume *WaterCan_log;
-    G4VPhysicalVolume *WaterCan_phys;
+  public:  
+    ExN06PhysicsListMessenger(ExN06PhysicsList* );
+   ~ExN06PhysicsListMessenger();
+    
+    void SetNewValue(G4UIcommand*, G4String);
+    
+  private:  
+    ExN06PhysicsList*     pPhysicsList;
+    
+    G4UIdirectory*        N06Dir;
+    G4UIdirectory*        physDir;
+    G4UIcmdWithAnInteger* verboseCmd;
+    G4UIcmdWithAnInteger* cerenkovCmd;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#endif /*WaterCherenkovDetectorConstruction_h*/
+#endif
+
