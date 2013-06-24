@@ -61,7 +61,34 @@ WaterCherenkovPrimaryGeneratorAction::~WaterCherenkovPrimaryGeneratorAction()
 
 void WaterCherenkovPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
-  G4Gun->SetParticleMomentumDirection(G4ThreeVector(1,0,0));
+  // Setup for isotropic decays
+  G4double XMom = G4UniformRand();
+  G4double YMom = G4UniformRand();
+  G4double ZMom = G4UniformRand();
+  G4Gun->SetParticleMomentumDirection(G4ThreeVector(XMom,YMom,ZMom));
+
+  //G4Gun->SetParticleMomentumDirection(G4ThreeVector(1,0,0));
+
+  // Setup for N16 beta decays
+  G4double Prob = G4UniformRand()*100;
+  G4double Decay = G4UniformRand()*100;
+  if(Prob >= 99.0677){
+    if(Decay <= 1.1){
+      G4Gun->SetParticleEnergy(1.5*MeV);
+    }
+    if(Decay>1.1 && Decay <= 6){
+      G4Gun->SetParticleEnergy(3.3*MeV);
+    } 
+    if(Decay>6 && Decay <= 74){
+      G4Gun->SetParticleEnergy(4.3*MeV);
+    } 
+    if(Decay>74 && Decay <= 100){
+      G4Gun->SetParticleEnergy(10.4*MeV);
+    } 
+  }  
+  if(Prob <99.0677){
+    G4Gun->SetParticleEnergy(0*MeV);
+  }
  
   //should be in cyclindrical coordinates
   G4double MinRadius = (9.91)*cm; //can is 10.16cm
@@ -72,7 +99,7 @@ void WaterCherenkovPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   G4double Z =(G4UniformRand()-0.5)*2*MaxRadius;
   
   // Muon Sims
-  while(sqrt(X*X+Y*Y)>MaxRadius || Z>MinRadius){
+  while(sqrt(X*X+Y*Y)>MinRadius || fabs(Z)>MinRadius){
     X = (G4UniformRand()-0.5)*2*MaxRadius;
     Y = (G4UniformRand()-0.5)*2*MaxRadius;
     Z = (G4UniformRand()-0.5)*2*MaxRadius;
