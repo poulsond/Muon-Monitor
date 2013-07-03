@@ -34,22 +34,30 @@
 
 #include "globals.hh"
 #include "G4UserStackingAction.hh"
+#include "G4Track.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 class WaterCherenkovStackingAction : public G4UserStackingAction
 {
-  public:
-    WaterCherenkovStackingAction();
-   ~WaterCherenkovStackingAction();
+public:
+  WaterCherenkovStackingAction();
+  ~WaterCherenkovStackingAction();
 
-  public:
-    G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track* aTrack);
-    void NewStage();
-    void PrepareNewEvent();
-
-  private:
-    G4int gammaCounter;
+  const G4LogicalVolume *fPostVolume;
+  const G4LogicalVolume *fDetectorVolume;
+  const G4LogicalVolume *fScintillatorVolume;
+  const G4LogicalVolume *fWaterVolume;
+  const G4LogicalVolume *fCarbonDiskVolume;
+  
+public:
+  G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track* aTrack);
+  void NewStage();
+  void PrepareNewEvent();  
+  
+private:
+  G4int gammaCounter;
+  G4int PhCounter;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

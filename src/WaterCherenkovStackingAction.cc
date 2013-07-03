@@ -31,6 +31,7 @@
 
 #include "WaterCherenkovStackingAction.hh"
 #include "WaterCherenkovEventAction.hh"
+#include "WaterCherenkovDetectorConstruction.hh"
 #include "G4RunManager.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4ParticleTypes.hh"
@@ -55,17 +56,42 @@ WaterCherenkovStackingAction::ClassifyNewTrack(const G4Track * aTrack)
 {
   if(aTrack->GetCurrentStepNumber() == 0)
     {
+      fScintillatorVolume = 
+	((WaterCherenkovDetectorConstruction*)G4RunManager::GetRunManager()
+	 ->GetUserDetectorConstruction())->GetScintillatorLogicalVolume();
+      
+      fWaterVolume =
+	((WaterCherenkovDetectorConstruction*)G4RunManager::GetRunManager()
+	 ->GetUserDetectorConstruction())->GetWaterLogicalVolume();
+      
+      fCarbonDiskVolume =
+	((WaterCherenkovDetectorConstruction*)G4RunManager::GetRunManager()
+	 ->GetUserDetectorConstruction())->GetCarbonDiskLogicalVolume();
+      
       WaterCherenkovEventAction *theEvent =
   	(WaterCherenkovEventAction*)G4RunManager::GetRunManager()->GetUserEventAction();
       
+      fPostVolume = aTrack->GetLogicalVolumeAtVertex();
+      
       if(aTrack->GetDefinition() == G4OpticalPhoton::OpticalPhotonDefinition()) 
-	{
-	  theEvent -> AddPhoton();
-	  if(aTrack->GetParentID()>0)
-	    { // particle is secondary
-	      gammaCounter++;
+	{	
+	  if(fPostVolume == fWaterVolume)
+	    {
+	      theEvent -> AddPhoton();
+	      if(aTrack->GetParentID()>0)
+		{ // particle is secondary
+		  gammaCounter++;
+		}
 	    }
-  	}
+	  if(fPostVolume == fScintillatorVolume && fPostVolume != fCarbonDiskVolume)
+	    {
+	      theEvent -> AddGamma();
+	      if(aTrack->GetParentID()>0)
+		{ // particle is secondary
+		  PhCounter++;
+		}
+	    }
+	}
       
       else if((aTrack->GetDefinition()==G4Electron::ElectronDefinition())   ||
 	      (aTrack->GetDefinition()==G4Positron::PositronDefinition())   ||
@@ -92,13 +118,18 @@ WaterCherenkovStackingAction::ClassifyNewTrack(const G4Track * aTrack)
 
 void WaterCherenkovStackingAction::NewStage()
 {
-  G4cout << "Number of optical photons produced in this event : "
+  G4cout << "Number of optical photons produced in Cherenkov material this event : "
          << gammaCounter << G4endl;
+
+  G4cout << "Number of optical photons produced in Scintillator material this event : "
+         << PhCounter << G4endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void WaterCherenkovStackingAction::PrepareNewEvent()
-{ gammaCounter = 0; }
+void WaterCherenkovStackingAction::PrepareNewEvent() { 
+  gammaCounter = 0; 
+  PhCounter = 0;
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

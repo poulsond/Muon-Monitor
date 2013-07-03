@@ -60,53 +60,26 @@ WaterCherenkovPrimaryGeneratorAction::~WaterCherenkovPrimaryGeneratorAction()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void WaterCherenkovPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
-{
-  // Setup for isotropic decays
-  G4double XMom = G4UniformRand();
-  G4double YMom = G4UniformRand();
-  G4double ZMom = G4UniformRand();
-  G4Gun->SetParticleMomentumDirection(G4ThreeVector(XMom,YMom,ZMom));
-
-  //G4Gun->SetParticleMomentumDirection(G4ThreeVector(1,0,0));
-
-  // Setup for N16 beta decays
-  G4double Prob = G4UniformRand()*100;
-  G4double Decay = G4UniformRand()*100;
-  if(Prob >= 99.0677){
-    if(Decay <= 1.1){
-      G4Gun->SetParticleEnergy(1.5*MeV);
-    }
-    if(Decay>1.1 && Decay <= 6){
-      G4Gun->SetParticleEnergy(3.3*MeV);
-    } 
-    if(Decay>6 && Decay <= 74){
-      G4Gun->SetParticleEnergy(4.3*MeV);
-    } 
-    if(Decay>74 && Decay <= 100){
-      G4Gun->SetParticleEnergy(10.4*MeV);
-    } 
-  }  
-  if(Prob <99.0677){
-    G4Gun->SetParticleEnergy(0*MeV);
-  }
- 
+{ 
+  G4Gun->SetParticleMomentumDirection(G4ThreeVector(1,0,0));
+  
   //should be in cyclindrical coordinates
   G4double MinRadius = (9.91)*cm; //can is 10.16cm
   G4double MaxRadius = (25.4)*cm; //graphite goes to 25.4cm
-  G4double X = (G4UniformRand()-0.5)*2*MaxRadius;
+  G4double X =(G4UniformRand()-0.5)*2*MinRadius;
   //G4double X =-35*cm;
-  G4double Y =(G4UniformRand()-0.5)*2*MaxRadius;
-  G4double Z =(G4UniformRand()-0.5)*2*MaxRadius;
+  G4double Y =(G4UniformRand()-0.5)*2*MinRadius;
+  G4double Z =(G4UniformRand()-0.5)*2*MinRadius;
   
   // Muon Sims
-  while(sqrt(X*X+Y*Y)>MinRadius || fabs(Z)>MinRadius){
-    X = (G4UniformRand()-0.5)*2*MaxRadius;
-    Y = (G4UniformRand()-0.5)*2*MaxRadius;
-    Z = (G4UniformRand()-0.5)*2*MaxRadius;
+  while(sqrt(X*X+Y*Y)>MinRadius){
+    X = (G4UniformRand()-0.5)*2*MinRadius;
+    Y = (G4UniformRand()-0.5)*2*MinRadius;
+    Z = (G4UniformRand()-0.5)*2*MinRadius;
   }
   
   // Neutron Sims
-  /*  while(fabs(Z)>MaxRadius || fabs(Y)>MaxRadius){
+  /*while(fabs(Z)>MaxRadius || fabs(Y)>MaxRadius){
     X = -35*cm;
     Y = (G4UniformRand()-0.5)*2*MaxRadius;
     Z = (G4UniformRand()-0.5)*2*MaxRadius;

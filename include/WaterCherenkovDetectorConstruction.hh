@@ -52,11 +52,13 @@ public:
   
   G4LogicalVolume* GetDetectorLogicalVolume() { return fDetectorLogical; }
   G4VPhysicalVolume* GetDetectorPhysicalVolume() { return fDetectorPhysical; }
-  G4LogicalVolume* GetAluminumLogicalVolume() { return AlCan_log; }
-  G4VPhysicalVolume* GetAluminumPhysicalVolume() { return AlCan_phys; }
+  G4LogicalVolume* GetScintillatorLogicalVolume() { return Scintillator_log; }
+  G4VPhysicalVolume* GetScintillatorPhysicalVolume() { return Scintillator_phys; }
   G4LogicalVolume* GetWaterLogicalVolume() { return WaterCan_log; }
   G4VPhysicalVolume* GetWaterPhysicalVolume() { return WaterCan_phys; }
-  
+  G4LogicalVolume* GetCarbonDiskLogicalVolume() { return CarbonDisk_log; }
+  G4VPhysicalVolume* GetCarbonDiskPhysicalVolume() { return CarbonDisk_phys; }
+   
   void SetDetectorZPosition(G4double aVal) { fDetectorPlanePositionZ = aVal; }
   void SetfReflectivity(G4double bVal = 0.9) { fReflectivity = bVal; }
   void SetfAbsConstant(G4double cVal = 1) { fAbsConstant = cVal; }
@@ -93,10 +95,12 @@ public:
 
     G4LogicalVolume *fDetectorLogical;
     G4VPhysicalVolume *fDetectorPhysical;
-    G4LogicalVolume *AlCan_log;
-    G4VPhysicalVolume *AlCan_phys;
+    G4LogicalVolume *Scintillator_log;
+    G4VPhysicalVolume *Scintillator_phys;
     G4LogicalVolume *WaterCan_log;
     G4VPhysicalVolume *WaterCan_phys;
+    G4LogicalVolume *CarbonDisk_log;
+    G4VPhysicalVolume *CarbonDisk_phys;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -38,7 +38,7 @@
 #include "G4ThreeVector.hh"
 
 
-const G4int kPMax = 10000; // maximum number of photons in event
+const G4int kPMax = 20000; // maximum number of photons in event
 
 class G4Event;
 class WaterCherenkovRunAction;
@@ -54,7 +54,8 @@ public:
   void BeginOfEventAction(const G4Event*);
   void EndOfEventAction(const G4Event*);
   void AddPhoton(){ fNPhotons++; }
-  
+  void AddGamma() { fSNPhotons++; }
+
   void ResetArrays();
   
   void AddLepton(G4ThreeVector initialPos, G4ThreeVector initialMom, 
@@ -77,7 +78,7 @@ public:
     leptonNum++;
   }
 
-  void AddVeto(G4int veto)
+  /*  void AddVeto(G4int veto)
   {
     if ( vetoNum > kPMax )
       {
@@ -85,10 +86,10 @@ public:
 	G4cout << " ***       : Keeping array sized at kPMax: " << kPMax << G4endl;
 	interactionNum = kPMax-1; // to prevent exceeding array size
       }
-    
+     
     OhNoVeto[vetoNum] = veto;
     vetoNum++;
-  }
+    }*/
   
 
   void AddProcess(G4int interaction, G4ThreeVector eventPos,
@@ -133,6 +134,7 @@ public:
   // Optical Photon Stuff //
   int    *GetNHits()      { return &fNHits; }
   int    *GetPhotonHits() { return &fNPhotons; }
+  int    *GetSPhotonHits() { return &fSNPhotons; }
   double *GetPlaneX() { return fPlaneX_cm; }
   double *GetPlaneY() { return fPlaneY_cm; }
   double *GetPlaneZ() { return fPlaneZ_cm; }
@@ -168,14 +170,15 @@ public:
   double *GetinteractionTime()   { return linteractionTime_ns; }
 
   // Veto Stuffs //
-  int    *GetVetoNum() { return &vetoNum; }
-  int    *GetOhNoVeto()    { return OhNoVeto; }
+  //  int    *GetVetoNum() { return &vetoNum; }
+  //  int    *GetOhNoVeto()    { return OhNoVeto; }
 
 private:
   WaterCherenkovRunAction * theRun;
   
   // Optical Photon Stuff //
   G4int  fNPhotons;
+  G4int  fSNPhotons;
   G4int  fNHits;
   double fPlaneX_cm[kPMax];
   double fPlaneY_cm[kPMax];
@@ -212,8 +215,8 @@ private:
   double linteractionTime_ns[kPMax];
 
   // Veto Stuff //
-  G4int  vetoNum;
-  G4int  OhNoVeto[kPMax];
+  //G4int  vetoNum;
+  //G4int  OhNoVeto[kPMax];
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

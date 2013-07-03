@@ -110,6 +110,7 @@ void WaterCherenkovRunAction::InitializeTree()
   tempTree->Branch("fNHits",        theEvent->GetNHits(),            "fNHits/I");
   tempTree->Branch("leptonNum",     theEvent->GetleptonNum(),        "leptonNum/I");
   tempTree->Branch("fNPhotons",     theEvent->GetPhotonHits(),       "fNPhotons/I");
+  tempTree->Branch("fSNPhotons",     theEvent->GetSPhotonHits(),       "fSNPhotons/I");
   tempTree->Branch("fPlaneX_cm",    theEvent->GetPlaneX(),           "fPlaneX_cm[fNHits]/D");
   tempTree->Branch("fPlaneY_cm",    theEvent->GetPlaneY(),           "fPlaneY_cm[fNHits]/D");
   tempTree->Branch("fPlaneZ_cm",    theEvent->GetPlaneZ(),           "fPlaneZ_cm[fNHits]/D");
@@ -137,8 +138,8 @@ void WaterCherenkovRunAction::InitializeTree()
   tempTree->Branch("GPrimePosZ_cm", theEvent->GetGPrimaryPositionZ(),"GPrimePosZ_cm[interactionNum]/D"); 
   tempTree->Branch("pDefinition",   theEvent->GetpDefinition(),      "pDefinition[interactionNum]/I");
   tempTree->Branch("linteractionTime_ns",    theEvent->GetinteractionTime(), "linteractionTime_ns[interactionNum]/D"); 
-  tempTree->Branch("vetoNum",       theEvent->GetVetoNum(),          "vetoNum/I"); 
-  tempTree->Branch("OhNoVeto",      theEvent->GetOhNoVeto(),         "OhNoVeto[vetoNum]/I"); 
+  //  tempTree->Branch("vetoNum",       theEvent->GetVetoNum(),          "vetoNum/I"); 
+  //  tempTree->Branch("OhNoVeto",      theEvent->GetOhNoVeto(),         "OhNoVeto[vetoNum]/I"); 
 
   fTree = tempTree;
 

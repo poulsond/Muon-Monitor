@@ -105,6 +105,42 @@ G4VPhysicalVolume* WaterCherenkovDetectorConstruction::Construct()
   Freon->AddElement(H, 4);
   Freon->AddElement(C, 8);
 
+// Ethanol
+  G4Material* Ethanol = new G4Material("Ethanol", density = 0.789*g/cm3, nelements=3);
+  Ethanol->AddElement(H, 6);  
+  Ethanol->AddElement(C, 2);  
+  Ethanol->AddElement(O, 1);  
+  
+// Ethanol and Water Mx
+  G4Material* EthanolandWater = new G4Material("EthanolandWater", density = 0.8945*g/cm3, nelements = 2);
+  EthanolandWater->AddMaterial(Ethanol, 50.*perCent);
+  EthanolandWater->AddMaterial(Water, 50.*perCent);
+
+// POPOP
+  G4Material *POPOP = new G4Material("POPOP", density = 364.4*g/mole, nelements = 4);
+  POPOP->AddElement(C, 24);
+  POPOP->AddElement(H, 16);
+  POPOP->AddElement(N, 2);
+  POPOP->AddElement(O, 2);
+ 
+// Toluene
+  G4Material *Toluene = new G4Material("Toluene", density = 0.87*g/cm3, nelements = 2);
+  Toluene->AddElement(C, 7);
+  Toluene->AddElement(H, 8);
+
+// PPO
+  G4Material *PPO = new G4Material("PPO", density = 1.06*g/cm3, nelements = 4);
+  PPO->AddElement(C, 15);
+  PPO->AddElement(H, 11);
+  PPO->AddElement(N, 1);
+  PPO->AddElement(O, 1);
+
+// NE-216
+  G4Material *NE = new G4Material("NE-216", density = 0.885*g/cm3, nelements = 3);
+  NE->AddMaterial(Toluene, 89.12*perCent);
+  NE->AddMaterial(PPO, 10.66*perCent);
+  NE->AddMaterial(POPOP, 0.22*perCent);
+
 // Aluminum
   G4Material* Aluminum = new G4Material("Aluminum",z=13, a=26.9815*g/mole, 
                                         density=2.699*g/cm3);
@@ -126,16 +162,8 @@ G4VPhysicalVolume* WaterCherenkovDetectorConstruction::Construct()
 
 // ------------ Generate & Add Material Properties Table ------------ //
 
-  //  const G4int nEntries = 2;
-  //  G4double PhotonEnergy[nEntries] = {2.00*eV, 3.00*eV};
-  //  G4double PhotonEnergy[nEntries] = {2.034*eV, 2.532*eV, 3.026*eV, 3.545*eV, 4.002*eV};
-    const G4int nEntries = 32;
-
-  // TODO: add list of 32 energies
-  // Water
-  // const G4int numEntries = 32;
-  //  G4double RefractiveIndex1[numEntries] =
-  //    {1.3435, 1.3500, 1.3545, 1.358, 1.3600};
+  const G4int nEntries = 32;
+  //  const G4int NumEntries = 7;
 
   G4double PhotonEnergy[nEntries] =
             { 2.034*eV, 2.068*eV, 2.103*eV, 2.139*eV,
@@ -147,17 +175,20 @@ G4VPhysicalVolume* WaterCherenkovDetectorConstruction::Construct()
               3.353*eV, 3.446*eV, 3.545*eV, 3.649*eV,
               3.760*eV, 3.877*eV, 4.002*eV, 4.136*eV };
 
-   G4double RefractiveIndex1[nEntries] =
+  /*G4double ScintEnergies[NumEntries] =
+            { 2.691*eV, 2.839*eV, 2.947*eV, 3.094*eV,
+              3.257*eV, 3.4388*eV, 3.641*eV };
+  */
+  G4double RefractiveIndexWater[nEntries] =
             { 1.3435, 1.344,  1.3445, 1.345,  1.3455,
               1.346,  1.3465, 1.347,  1.3475, 1.348,
               1.3485, 1.3492, 1.35,   1.3505, 1.351,
               1.3518, 1.3522, 1.3530, 1.3535, 1.354,
               1.3545, 1.355,  1.3555, 1.356,  1.3568,
               1.3572, 1.358,  1.3585, 1.359,  1.3595,
-              1.36,   1.3608};
+              1.36,   1.3608 };
 
-  // G4double Absorption1[numEntries] =   {3.448*m, 45.455*m, 45.455*m, 27.000*m, 17.500*m};
-  G4double Absorption1[nEntries] =
+  G4double Absorption[nEntries] =
            { fAbsConstant*3.448*m,  fAbsConstant*4.082*m,   fAbsConstant*6.329*m, 
 	     fAbsConstant*9.174*m,  fAbsConstant*12.346*m,  fAbsConstant*13.889*m,
 	     fAbsConstant*15.152*m,  fAbsConstant*17.241*m,  fAbsConstant*18.868*m,
@@ -169,6 +200,27 @@ G4VPhysicalVolume* WaterCherenkovDetectorConstruction::Construct()
 	     fAbsConstant*30.000*m,  fAbsConstant*28.500*m,  fAbsConstant*27.000*m, 
 	     fAbsConstant*24.500*m,  fAbsConstant*22.000*m,  fAbsConstant*19.500*m,
 	     fAbsConstant*17.500*m,  fAbsConstant*14.500*m };
+  
+  G4double RefractiveIndexEthanol[nEntries];
+  for(int i = 0; i < nEntries; i++){
+    double lambda = 1.23779*(eV*mm)/PhotonEnergy[i];
+    double n = 1.35265 + 0.00306*1/lambda*1/lambda + 0.00002*1/lambda*1/lambda*1/lambda*1/lambda;
+    RefractiveIndexEthanol[i] = n;
+  } 
+  
+  /*G4double PlasticAbs[NumEntries] = 
+           { 3.1*m, 3.5*m, 5.1*m, 5.7*m, 7.8*m, 8.3*m, 8.2*m };
+  */
+  G4double RefractiveIndexPlastic[nEntries];
+  G4double PlastFast[nEntries];
+  G4double PlasticAbs[nEntries];
+  //G4double PlastSlow[NumEntries];
+  for(int i = 0; i < nEntries; i++){
+    RefractiveIndexPlastic[i] = 1.523;
+    PlastFast[i] = 3.5;
+    PlasticAbs[i] = 1.5*m;
+    //    PlastSlow[i] = 17.61;
+  }
 
   G4double ScintilFast[nEntries] =
             { 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
@@ -184,23 +236,53 @@ G4VPhysicalVolume* WaterCherenkovDetectorConstruction::Construct()
               4.00, 5.00, 6.00, 7.00, 8.00, 9.00, 8.00,
               7.00, 6.00, 5.00, 4.00 };
 
-  G4MaterialPropertiesTable* myMPT1 = new G4MaterialPropertiesTable();
-  myMPT1->AddProperty("RINDEX",PhotonEnergy,RefractiveIndex1,nEntries);
-  myMPT1->AddProperty("ABSLENGTH",PhotonEnergy,Absorption1,nEntries);
-  //  myMPT1->AddProperty("FASTCOMPONENT",PhotonEnergy,ScintilFast,nEntries);
-  //  myMPT1->AddProperty("SLOWCOMPONENT",PhotonEnergy,ScintilSlow,nEntries);
+  G4MaterialPropertiesTable* WaterMPT = new G4MaterialPropertiesTable();
+  WaterMPT->AddProperty("RINDEX",PhotonEnergy,RefractiveIndexWater,nEntries);
+  WaterMPT->AddProperty("ABSLENGTH",PhotonEnergy,Absorption,nEntries);
+  //WaterMPT->AddProperty("FASTCOMPONENT",PhotonEnergy,ScintilFast,nEntries);
+  //WaterMPT->AddProperty("SLOWCOMPONENT",PhotonEnergy,ScintilSlow,nEntries);
   
-  //  myMPT1->AddConstProperty("SCINTILLATIONYIELD",50./MeV);
-  myMPT1->AddConstProperty("RESOLUTIONSCALE",1.0);
-  //  myMPT1->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
-  //  myMPT1->AddConstProperty("SLOWTIMECONSTANT",10.*ns);
-  myMPT1->AddConstProperty("YIELDRATIO",0.8);
+  //WaterMPT->AddConstProperty("SCINTILLATIONYIELD",50./MeV);
+  //WaterMPT->AddConstProperty("RESOLUTIONSCALE",1.0);
+  //WaterMPT->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
+  //WaterMPT->AddConstProperty("SLOWTIMECONSTANT",10.*ns);
+  //WaterMPT->AddConstProperty("YIELDRATIO",0.8);
   
-  Water->SetMaterialPropertiesTable(myMPT1);
+  Water->SetMaterialPropertiesTable(WaterMPT);
+
+  G4MaterialPropertiesTable* PlasticMPT = new G4MaterialPropertiesTable();
+  PlasticMPT->AddProperty("RINDEX",PhotonEnergy,RefractiveIndexPlastic,nEntries);
+  PlasticMPT->AddProperty("ABSLENGTH",PhotonEnergy,PlasticAbs,nEntries);
+  PlasticMPT->AddProperty("FASTCOMPONENT",PhotonEnergy,PlastFast,nEntries);
+  // PlasticMPT->AddProperty("SLOWCOMPONENT",ScintEnergies,PlastSlow,nEntries);
+  
+  PlasticMPT->AddConstProperty("SCINTILLATIONYIELD",15000/MeV);
+  PlasticMPT->AddConstProperty("RESOLUTIONSCALE",1.0);
+  PlasticMPT->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
+  //  PlasticMPT->AddConstProperty("SLOWTIMECONSTANT",1.*ns);
+  //PlasticMPT->AddConstProperty("YIELDRATIO",0.895);
+  
+  NE->SetMaterialPropertiesTable(PlasticMPT);
+  
+  G4MaterialPropertiesTable* EthanolMPT = new G4MaterialPropertiesTable();
+  EthanolMPT->AddProperty("RINDEX",PhotonEnergy,RefractiveIndexEthanol,nEntries);
+  EthanolMPT->AddProperty("ABSLENGTH",PhotonEnergy,Absorption,nEntries);
+  //EthanolMPT->AddProperty("FASTCOMPONENT",PhotonEnergy,ScintilFast,nEntries);
+  //EthanolMPT->AddProperty("SLOWCOMPONENT",PhotonEnergy,ScintilSlow,nEntries);
+  
+  //EthanolMPT->AddConstProperty("SCINTILLATIONYIELD",50./MeV);
+  //EthanolMPT->AddConstProperty("RESOLUTIONSCALE",1.0);
+  //EthanolMPT->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
+  //EthanolMPT->AddConstProperty("SLOWTIMECONSTANT",10.*ns);
+  //EthanolMPT->AddConstProperty("YIELDRATIO",0.8);
+  
+  Ethanol->SetMaterialPropertiesTable(EthanolMPT);
   
   // Set the Birks Constant for the Water scintillator
 
-  //  Water->GetIonisation()->SetBirksConstant(0.126*mm/MeV);
+  //Water->GetIonisation()->SetBirksConstant(0.126*mm/MeV);
+  NE->GetIonisation()->SetBirksConstant(0.126*mm/MeV);
+  //Ethanol->GetIonisation()->SetBirksConstant(0.126*mm/MeV);
 
   // Glass
   G4double Glass_RIND[nEntries]=
@@ -209,7 +291,6 @@ G4VPhysicalVolume* WaterCherenkovDetectorConstruction::Construct()
 	    1.49,1.49,1.49,1.49,1.49,1.49,1.49,1.49,1.49,
 	    1.49,1.49,1.49,1.49,1.49};
 
-  //  G4double Glass_RIND[nEntries]={1.49, 1.49};
   G4double Glass_AbsLength[nEntries]=
            {420.*cm,420.*cm,420.*cm,420.*cm,420.*cm,420.*cm,
 	    420.*cm,420.*cm,420.*cm,420.*cm,420.*cm,420.*cm,
@@ -218,26 +299,10 @@ G4VPhysicalVolume* WaterCherenkovDetectorConstruction::Construct()
 	    420.*cm,420.*cm,420.*cm,420.*cm,420.*cm,420.*cm,
 	    420.*cm,420.*cm};
 
-  //  G4double Glass_AbsLength[nEntries]={420.*cm, 420.*cm};
   G4MaterialPropertiesTable *Glass_mt = new G4MaterialPropertiesTable();
   Glass_mt->AddProperty("ABSLENGTH",PhotonEnergy,Glass_AbsLength,nEntries);
   Glass_mt->AddProperty("RINDEX",PhotonEnergy,Glass_RIND,nEntries);
-  Glass->SetMaterialPropertiesTable(Glass_mt);
-
-  // Aluminum 
-  /*
-  G4MaterialPropertiesTable* propTableAluminizedMylar = new G4MaterialPropertiesTable();
-  const G4int numEntriesAl = 3;
-  G4double energiesAl[numEntriesAl] = {2.4*eV,2.8*eV,3.4*eV};
-  G4double refractiveIndexAl[numEntriesAl] = {0.87,0.61,0.40};
-  G4double absorptionIndexAl[numEntriesAl] = {1.0/0.024*nm,1.0/0.028*nm,1.0/0.034*nm};
-  propTableAluminizedMylar->AddProperty("RINDEX",energiesAl,
-                                        refractiveIndexAl,numEntriesAl);	
-  propTableAluminizedMylar->AddProperty("ABSLENGTH",energiesAl,
-n                                        absorptionIndexAl,numEntriesAl);
-  Aluminum->SetMaterialPropertiesTable(propTableAluminizedMylar);
-  */
-  
+  Glass->SetMaterialPropertiesTable(Glass_mt);  
 
 //	------------- Volumes --------------     //
 
@@ -273,25 +338,45 @@ n                                        absorptionIndexAl,numEntriesAl);
     new G4PVPlacement(0,G4ThreeVector(0,0,0),CarbonCan_log,"CarbonCan_phys",
 		      GasTank_log,false,0);
 
-// The Can of Aluminum
+  // The NE-216 Veto
+  G4Tubs *Scintillator = new G4Tubs("Scintillator",0,11.16*cm+0.25*cm,11.16*cm+0.25*cm,
+				    0*deg, 360*deg);
+
+  Scintillator_log = new G4LogicalVolume(Scintillator, NE,"Scintillator_log",0,0,0);
+  
+  Scintillator_phys = new G4PVPlacement(0,G4ThreeVector(0,0,0),Scintillator_log,"Scintillator_phys",
+					CarbonCan_log,false,0);
+
+// The Carbon Disk
+  G4Tubs* CarbonDisk = new G4Tubs("CarbonDisk",0,9*cm,0.5*cm,
+				 0*deg,360*deg);
+
+  CarbonDisk_log = 
+    new G4LogicalVolume(CarbonDisk,Carbon,"CarbonDisk_log",0,0,0);
+
+  CarbonDisk_phys =
+    new G4PVPlacement(0,G4ThreeVector(0,0,11.16*cm-0.25*cm),CarbonDisk_log,"CarbonDisk_phys",
+		      Scintillator_log,false,0);
+  
+  // The Can of Aluminum
   G4Tubs* AlCan = new G4Tubs("AlCan",0,10.16*cm+0.25*cm,10.16*cm+0.25*cm,
-			     0*deg,360*deg);
+  			     0*deg,360*deg);
   //  G4Box* AlCan = new G4Box("AlCan",
   //		   10.16*cm+.25*cm,10.16*cm+.25*cm,10.16*cm+.25*cm);
-  //G4Tubs* AlCan = new G4Tubs("AlCan",0,15.16*cm+0.25*cm,15.16*cm+0.25*cm,
+  //G4Tubs* AlCan = new G4Tubs("AlCan",0,13.16*cm+0.25*cm,13.16*cm+0.25*cm,
   //		     0*deg,360*deg);  
 
-  AlCan_log = new G4LogicalVolume(AlCan,Aluminum,"AlCan_log",0,0,0);
+  G4LogicalVolume *AlCan_log = new G4LogicalVolume(AlCan,Aluminum,"AlCan_log",0,0,0);
 
-  AlCan_phys = new G4PVPlacement(0,G4ThreeVector(0,0,0),AlCan_log,"AlCan_phys",
-				 CarbonCan_log,false,0);
+  G4VPhysicalVolume *AlCan_phys = new G4PVPlacement(0,G4ThreeVector(0,0,0),AlCan_log,"AlCan_phys",
+				 Scintillator_log,false,0);
   
   // The Can of Water
   G4Tubs* WaterCan = new G4Tubs("WaterCan",0*cm,10.16*cm-0.25*cm,10.16*cm-0.25*cm,
 				0*deg,360*deg);
   //   G4Box* WaterCan = new G4Box("WaterCan",
   //		       10.16*cm-0.25*cm,10.16*cm-0.25*cm,10.16*cm-0.25*cm);
-  //G4Tubs* WaterCan = new G4Tubs("WaterCan",0*cm,15.16*cm-0.25*cm,15.16*cm-0.25*cm,
+  //  G4Tubs* WaterCan = new G4Tubs("WaterCan",0*cm,13.16*cm-0.25*cm,13.16*cm-0.25*cm,
   //			0*deg,360*deg);
   
   WaterCan_log = new G4LogicalVolume(WaterCan,Water,"WaterCan_log",0,0,0);
@@ -300,14 +385,14 @@ n                                        absorptionIndexAl,numEntriesAl);
 				    AlCan_log,false,0);
   
   // The Can of Silicon
-  G4Tubs* GlassCan = new G4Tubs("GlassCan",0*cm,2.54*cm,7.6075*cm/*5.1075*cm*/
+  G4Tubs* GlassCan = new G4Tubs("GlassCan",0*cm,2.54*cm,7.6075*cm/*6.1075*cm*/
 				,0*deg,360*deg);
   
   G4LogicalVolume* GlassCan_log = 
     new G4LogicalVolume(GlassCan,Silicon,"GlassCan_log",0,0,0);
   
   // The Can of Vacuum
-  G4Tubs* VCan = new G4Tubs("VCan",0*cm,2.2225*cm,7.29*cm/*4.79*cm*/,0*deg,360*deg);
+  G4Tubs* VCan = new G4Tubs("VCan",0*cm,2.2225*cm,7.29*cm/*5.79*cm*/,0*deg,360*deg);
   G4LogicalVolume* VCan_log = new G4LogicalVolume(VCan,Vacuum,"VCan_log",0,0,0);
   
   // The Glass Disks
@@ -328,11 +413,11 @@ n                                        absorptionIndexAl,numEntriesAl);
       G4int angle = 90*i;
       
       GlassCan_phys = new G4PVPlacement(0,
-                         G4ThreeVector(cos(angle*deg)*6*cm/*change*/,
-			 sin(angle*deg)*6*cm,
-               /*change*/17.7925*cm-0.249*cm),
-		         GlassCan_log,"GlassCan_phys",
-			 CarbonCan_log,false, i);
+                          G4ThreeVector(cos(angle*deg)*6*cm/*change*/,
+			  sin(angle*deg)*6*cm,
+                /*change*/17.7925*cm-0.249*cm),
+		          GlassCan_log,"GlassCan_phys",
+			  CarbonCan_log,false, i);
       
       VCan_phys = new G4PVPlacement(0,
 			  G4ThreeVector(cos(angle*deg)*6*cm,
@@ -369,20 +454,19 @@ n                                        absorptionIndexAl,numEntriesAl);
    G4LogicalBorderSurface* AluminumSurface = new G4LogicalBorderSurface(
 		  "AluminumSurface",WaterCan_phys,AlCan_phys,OpAlSurface);
 
-   G4MaterialPropertiesTable* myMPT3 = new G4MaterialPropertiesTable();
+   G4MaterialPropertiesTable* Alu_MPT = new G4MaterialPropertiesTable();
    
-   G4double backscatter[nEntries];// = {0.1,0.1,0.1};
-   //  G4double backscatter[nEntries] = {0.1, 0.1};
-  G4double reflectivity[nEntries];// = {fReflectivity,fReflectivity,fReflectivity}; //should not be zero!
-  //  G4double reflectivity[nEntries] = {fReflectivity, fReflectivity};
-  G4double efficiency[nEntries];// = {0.5,0.7,0.9};
-  //  G4double efficiency[nEntries] = {0.5, 0.5};
-  G4double rindex2[nEntries];// = {1.3,1.35,1.4};
-  //  G4double rindex2[nEntries] = {1.3, 1.3};
-  G4double specularlobe[nEntries];// = {0.3,0.3,0.3};
-  //  G4double specularlobe[nEntries] = {0.3, 0.3};
-  G4double specularspike[nEntries];// = {0.2,0.2,0.2};
-  //  G4double specularspike[nEntries] = {0.2, 0.2};
+   G4double backscatter[nEntries];
+ 
+   G4double reflectivity[nEntries];
+
+   G4double efficiency[nEntries];
+
+   G4double rindex2[nEntries];
+
+   G4double specularlobe[nEntries];
+
+   G4double specularspike[nEntries];
 
   for(int i=0; i<nEntries; i++) {
     backscatter[i] = 0.1;
@@ -393,14 +477,14 @@ n                                        absorptionIndexAl,numEntriesAl);
     specularspike[i] = 0.2;
   }
 
-  myMPT3 -> AddProperty("BACKSCATTERCONSTANT",PhotonEnergy,backscatter,nEntries);
-  myMPT3 -> AddProperty("REFLECTIVITY",PhotonEnergy,reflectivity,nEntries);
-  myMPT3 -> AddProperty("EFFICIENCY",PhotonEnergy,efficiency,nEntries);
-  myMPT3 -> AddProperty("RINDEX",PhotonEnergy,rindex2,nEntries);
-  // myMPT3 -> AddProperty("SPECULARLOBECONSTANT",PhotonEnergy,specularlobe,nEntries);
-  // myMPT3 -> AddProperty("SPECULARSPIKECONSTANT",PhotonEnergy,specularspike,nEntries);
+  Alu_MPT -> AddProperty("BACKSCATTERCONSTANT",PhotonEnergy,backscatter,nEntries);
+  Alu_MPT -> AddProperty("REFLECTIVITY",PhotonEnergy,reflectivity,nEntries);
+  Alu_MPT -> AddProperty("EFFICIENCY",PhotonEnergy,efficiency,nEntries);
+  Alu_MPT -> AddProperty("RINDEX",PhotonEnergy,rindex2,nEntries);
+  Alu_MPT -> AddProperty("SPECULARLOBECONSTANT",PhotonEnergy,specularlobe,nEntries);
+  Alu_MPT -> AddProperty("SPECULARSPIKECONSTANT",PhotonEnergy,specularspike,nEntries);
 
-  OpAlSurface->SetMaterialPropertiesTable(myMPT3);
+  OpAlSurface->SetMaterialPropertiesTable(Alu_MPT);
 
 // Glass Disk Surface
   G4OpticalSurface* OpGlSurface = new G4OpticalSurface("OpGlSurface");
@@ -411,23 +495,20 @@ n                                        absorptionIndexAl,numEntriesAl);
   G4LogicalBorderSurface* GlSkinSurface = new G4LogicalBorderSurface(
 		 "GlSkinSurface",WaterCan_phys,SDisk_phys,OpGlSurface);
 
-  G4MaterialPropertiesTable* myMPT4 = new G4MaterialPropertiesTable();
+  G4MaterialPropertiesTable* Glass_MPT = new G4MaterialPropertiesTable();
  
-  G4double backscatter2[nEntries];// = {0.1,0.1,0.1};
-  //  G4double backscatter2[nEntries] = {0.1, 0.1};
-  G4double efficiency2[nEntries];// = {0.5,0.5,0.5};
-  //  G4double efficiency2[nEntries] = {0.5, 0.5};
+  G4double backscatterGlass[nEntries];// = {0.1,0.1,0.1};
+  G4double efficiencyGlass[nEntries];// = {0.5,0.5,0.5};
 
   for(int i=0; i<nEntries; i++) {
-    backscatter2[i] = 0.1;
-    efficiency2[i] = 0.5;
+    backscatterGlass[i] = 0.1;
+    efficiencyGlass[i] = 0.5;
   }
 
-  myMPT4 -> AddProperty("BACKSCATTERCONSTANT",PhotonEnergy,backscatter2,nEntries);
-  //  myMPT4 -> AddProperty("REFLECTIVITY",PhotonEnergy,reflectivity2,nEntries);
-  myMPT4 -> AddProperty("EFFICIENCY",PhotonEnergy,efficiency2,nEntries);
+  Glass_MPT -> AddProperty("BACKSCATTERCONSTANT",PhotonEnergy,backscatterGlass,nEntries);
+  Glass_MPT -> AddProperty("EFFICIENCY",PhotonEnergy,efficiencyGlass,nEntries);
  
-  OpGlSurface->SetMaterialPropertiesTable(myMPT4);
+  OpGlSurface->SetMaterialPropertiesTable(Glass_MPT);
 
 //     ---------- Visualization Attributes ----------     //
 

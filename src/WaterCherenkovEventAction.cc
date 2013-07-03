@@ -56,9 +56,10 @@ void WaterCherenkovEventAction::BeginOfEventAction(const G4Event* anEvent)
 {
   fNHits = 0;
   fNPhotons = 0;
+  fSNPhotons = 0;
   interactionNum = 0;
   leptonNum = 0;
-  vetoNum = 0;
+  //vetoNum = 0;
   ResetArrays();
   fPrimePosX_cm = anEvent->GetPrimaryVertex()->GetX0()/cm;
   fPrimePosY_cm = anEvent->GetPrimaryVertex()->GetY0()/cm;
@@ -107,7 +108,7 @@ void WaterCherenkovEventAction::ResetArrays()
     GPrimePosZ_cm[i] = 0;
     linteractionTime_ns[i] = 0;
     // Veto Stuff
-    OhNoVeto[i] = 0;
+    //OhNoVeto[i] = 0;
   }
 }
 
@@ -115,7 +116,7 @@ void WaterCherenkovEventAction::ResetArrays()
  
 void WaterCherenkovEventAction::EndOfEventAction(const G4Event*)
 {
-  if(fNHits >= 0)
+  if(fNHits >=  0)
     {
     	theRun->GetTree()->Fill();
     }

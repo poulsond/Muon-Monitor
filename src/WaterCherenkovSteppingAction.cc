@@ -2,7 +2,6 @@
 #include "WaterCherenkovSteppingAction.hh"
 #include "WaterCherenkovEventAction.hh"
 #include "WaterCherenkovDetectorConstruction.hh"
-#include "WaterCherenkovPhysicsList.hh"
 
 ///     Geant4 package includes
 #include "G4SteppingManager.hh"
@@ -31,13 +30,17 @@ void WaterCherenkovSteppingAction::UserSteppingAction(const G4Step *theStep)
     ((WaterCherenkovDetectorConstruction*)G4RunManager::GetRunManager()
      ->GetUserDetectorConstruction())->GetDetectorLogicalVolume();
   
-  fAluminumVolume = 
+  fScintillatorVolume = 
     ((WaterCherenkovDetectorConstruction*)G4RunManager::GetRunManager()
-     ->GetUserDetectorConstruction())->GetAluminumLogicalVolume();
+     ->GetUserDetectorConstruction())->GetScintillatorLogicalVolume();
   
   fWaterVolume =
     ((WaterCherenkovDetectorConstruction*)G4RunManager::GetRunManager()
      ->GetUserDetectorConstruction())->GetWaterLogicalVolume();
+
+  fCarbonDiskVolume =
+    ((WaterCherenkovDetectorConstruction*)G4RunManager::GetRunManager()
+     ->GetUserDetectorConstruction())->GetCarbonDiskLogicalVolume();
 
   WaterCherenkovEventAction *theEvent =
     (WaterCherenkovEventAction*)G4RunManager::GetRunManager()->GetUserEventAction();
@@ -49,7 +52,7 @@ void WaterCherenkovSteppingAction::UserSteppingAction(const G4Step *theStep)
     {
       fPostVolume = theStep->GetPostStepPoint()->GetPhysicalVolume()->GetLogicalVolume();
     }
-  
+
   else 
     {
       fPostVolume = NULL;
@@ -110,14 +113,14 @@ void WaterCherenkovSteppingAction::UserSteppingAction(const G4Step *theStep)
     }
 
   // Attempt to make a veto
-  if(fPostVolume == fAluminumVolume && fPostVolume != fWaterVolume)
+  /*  if(fPostVolume == fScintillatorVolume && fPostVolume != fWaterVolume)
     {
       if(theStep->GetTrack()->GetDefinition() == G4Electron::ElectronDefinition() || theStep->GetTrack()->GetDefinition() == G4Positron::PositronDefinition()){
-	if(theStep->GetTrack()->GetVelocity() >= 0.75)
+	if(theStep->GetTrack()->GetVelocity()/(m/s) > 224844343)
 	  {
 	    int veto = 1;
 	    theEvent->AddVeto(veto);
-	  }
-      }
-    }
+	  } 
+      } 
+      }*/
 }
